@@ -1,0 +1,61 @@
+Os ciclistas iniciam a prova ao mesmo tempo no mesmo ladodo velódromo e a cada duas voltas, o ciclista que completar a
+última volta na última posição é eliminado. A prova termina quando sobrar apenas um ciclista, que é o campeão.
+
+A simulação deve considerar que a corrida é um velódromo com d metros e que n ciclistas começam a prova (d > 249, 5 < n
+<= 5*d). A qualquer momento, no máximo 10 ciclistas podem estar lado a lado em cada ponto da pista. Considere que cada
+ciclista ocupa exatamente 1 metro do comprimento da pista.
+
+O simulador deve criar n threads "ciclista" iguais. Os ciclistas largam em fila ordenados aleatoriamente com no máximo 5
+ciclistas lado a lado em cada posição. É possível faze um array de tamanho d, no qual cada metro da pista possui uma
+struct posição, na qual são armazenadas as 10 pistas e quantos ciclistas ocupam cada posição.
+
+Todos os ciclistas fazem a primeira volta a 30Km/h, portanto é possível utilizar esta primeira volta para testa a
+barreira de sincronização. 
+
+A partir da segunda volta, cada um dos ciclistas define suas velocidades aleatoriamente, para realizar a volta atual,
+como sendo 30 ou 60Km/h (1m a cada 60ms). Caso a volta anterior tenha sido feita a 30 Km/h, o sorteio éfeito com 80% de
+chance de escolher 60Km/h e 20% de continuar na mesma velocidade. Caso a volta anterior seja 60Km/h, o sorteio é feito
+com 40% de chance de escolher 30Km/h. Se a velocidade sorteada para umciclista for de 30Km/h, todos os ciclistas que
+estiverem imediatamente atrás dele na mesma linha que ele,devem pedalar a 30Km/h, independente do valor que foi sorteado
+para eles, caso não seja possível ultrapassar. Pode ser interessante utilizar um campo em cada struct posição que
+armazenará a velocidade dos ciclistas na pista seguinte, sendo apenas (ilimitado) para a primeira e última pista. Além
+disso, pode-se guardar o número de ciclistas da linha a frente, para realizar o controle de ultrapassagem.
+
+Ultrapassagens podem ser realizadas caso haja espaço em alguma pista mais externa (ultrapassagens só podem ser
+realizadas usando as pistas externas). Desconsidere a aceleração necessária para mudar de velocidade. 
+
+Seu código deve possuir um vetor compartilhado "pista" que tem uma tamanho igual a d. Cada posição do vetor corresponde
+portanto a 1 metro da pista. Em um dado instante de tempo, a posição i da pista deve possuir os identificadores de todos
+os ciclistas que estão naquele trecho. A simulação do seu código deve simular a corrida em intervalos de 60ms até as
+duas últimas voltas. A partir das duas últimas voltas, caso algum ciclista tenha sido sorteado para pedalar a 90Km/h, a
+simulação deve passar a simular a corrida em intervalos de 20ms. Cada thread ciclista tem a obrigação de escrever seu
+identificador na posição correta do vetor pista a cda momento m que ele entra em um novo trecho de 1m, e de remover seu
+identificador da posição referente ao trecho que ele acabou de sair. Como é possível perceber, cada posição do vetor
+corresponde a uma variável compartilhada quedeve ter seu acesso controlado. Note que apesar de ter sorteado a velocidade
+de 60 Km/h, pode ser que um ciclista não consiga de fato pedalar a essa velocidade, por exemplo, caso ele esteja na
+linha mais externa da pista com um ciclista pedalando a 30Km/h imediatamente a frente.
+
+Assim como no mundo real, ciclistas podem "quebrar" durante a prova e desistirem. COnsidere a cada vezque um ciclista
+completa múltiplos de 6 voltas, ele tem a chancede 5% de quebrar. Caso algum ciclista quebre, essa informação deve ser
+exibida na tela no momento exato em que ele quebrou. A volta em que ele estava e o identificador dele devem ser
+informados. Entretanto, se houverem apenas 5 ciclistas na prova, a probabilidade de quebra para todos deixa de existir.
+
+Toda vez que um ciclista quebrar, a thread dele deve ser destruída. O mesmo deve acontecer quando o ciclista for
+eliminado. Em casos onde mais de um ciclista passe pela linha de chegada na última posição nas voltas de eliminação, o
+ciclista eliminado deve ser aleatoriamente sorteadodentre esses últimos. Na struct que armazena os ciclistas deve então
+existir um campo que indique quantas voltas o ciclista realizou até o momento, assim, nas voltas múltiplas de 6, há 5%
+de chance de quebrar.
+
+A saída do seu programa deve ser um relatório informando a cada volta completada, as posições de todos os ciclistas
+naquela volta. Ao término da corrida (depois que todos os ciclistas passarem pela linha de chegada), o ranqueamento
+final de todos os ciclistas, e o instante de tempo que cada um cruzou a linha de chegada pela última vez, também deve
+ser impresso na saída (considere que a simulação começa no instante de tempo zero). Ciclistasque querarem deve ser
+identificados nessa lista final como tendo quebrado , ao invés de mostrar as suas colocações, deve ser informada a volta
+em que eles quebraram. Seu programa deve ainda permitir uma opção de debug que informa a cada 60ms (e 20ms nas duas
+últimas voltas, caso alguém pedale a 90Km/h) o status de cada posição da pista, ou seja, o identificador do(s)
+ciclistas(s) naquela posição ou a informação de que não há nenhum ciclista ali.
+
+Não há um formato padrão paraa saída do seu programa. basta que ela informe tudo que foi solicitado no parágrafo
+anterior. Com relação à entrada, seu simulado deve receber como argumentos de linha de comando, nesta ordem, os dois
+números inteiros: d n
+Não há necessidade de validar a entrada.
