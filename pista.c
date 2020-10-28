@@ -1,15 +1,9 @@
 #include "pista.h"
-#include <pthread.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
 
 #define N 5
 #define TMAX 10000000000 /* 10s no máximo para comer e 10s no
                             máximo para pensar */
-
 pthread_mutex_t forkV[N];
-
 
 void * filosofoF (void * i) {
     struct timespec ts;

@@ -1,12 +1,16 @@
 #ifndef _VELODROMO_H
 #define _VELODROMO_H
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <pthread.h>
+#include <time.h>
+
 #define NUM_FAIXAS 10
 
 typedef struct ciclista_t {
 	int id;
 	int velocidade;	
-
 } ciclista;
 
 typedef struct linha_t {
