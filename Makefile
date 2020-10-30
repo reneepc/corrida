@@ -3,3 +3,6 @@ pista: pista.c pista.h
 
 aleatorio.o: aleatorio.c aleatorio.h
 	gcc -c aleatorio.c
+
+clean:
+	rm *.o pista

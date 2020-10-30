@@ -1,121 +1,92 @@
 #include "pista.h"
 
-#define N 5
-#define TMAX 10000000000 /* 10s no máximo para comer e 10s no
-                            máximo para pensar */
-pthread_mutex_t forkV[N];
+int d;
+int n;
+pthread_mutex_t mutex_n;
+pthread_barrier_t barr[2];
+int turno = 0;
 
-void * filosofoF (void * i) {
-    struct timespec ts;
-    int * eu = (int *) i;
+int intervalo = 60; // Multiplicado pela velocidade, obtem-se a distância percorrida. Modificar a lógica das velocidades para m/s, 30 possui valor decimal, porém podemos tentar contornar utilizando uma variável que é incrementada até três a cada ciclo e depois dividida, quando a velocidade for igual a 30m/s.
 
-    fprintf(stderr,"Sou o Filosofo %d\n",*eu);
-   
-    if (*eu != N-1)
-        while (1) {
-            pthread_mutex_lock(&forkV[*eu]);
-            fprintf(stderr,"Pegou garfo %d: Filosofo %d\n", *eu, *eu);
-            pthread_mutex_lock(&forkV[(*eu+1)%N]);
-            fprintf(stderr,"Pegou garfo %d: Filosofo %d\n", (*eu+1)%N, *eu);
+linha* pista;
+rank* ranking;
+pthread_barrier_t* barreiras;
 
-            /* Come */
-            fprintf(stderr,"Comendo: Filosofo %d\n", *eu);
-            ts.tv_sec=0;
-            ts.tv_nsec=TMAX*random()/RAND_MAX;
-            nanosleep(&ts,NULL);
-
-            fprintf(stderr,"Devolveu garfo %d: Filosofo %d\n", *eu, *eu);
-            pthread_mutex_unlock(&forkV[*eu]);
-            fprintf(stderr,"Devolveu garfo %d: Filosofo %d\n", (*eu+1)%N, *eu);
-            pthread_mutex_unlock(&forkV[(*eu+1)%N]);
-
-            /* Pensando  */
-            fprintf(stderr,"Pensando: Filosofo %d\n", *eu);
-            ts.tv_sec=0;
-            ts.tv_nsec=TMAX*random()/RAND_MAX;
-            nanosleep(&ts,NULL);
-        }
-    else
-        /* Mudando a ordem para o último filósofo */
-        while (1) {
-            pthread_mutex_lock(&forkV[(*eu+1)%N]);
-            fprintf(stderr,"Pegou garfo %d: Filosofo %d\n", (*eu+1)%N, *eu);
-            pthread_mutex_lock(&forkV[*eu]);
-            fprintf(stderr,"Pegou garfo %d: Filosofo %d\n", *eu, *eu);
-
-            /* Come */
-            fprintf(stderr,"Comendo: Filosofo %d\n", *eu);
-            ts.tv_sec=0;
-            ts.tv_nsec=TMAX*random()/RAND_MAX;
-            nanosleep(&ts,NULL);
-
-            fprintf(stderr,"Devolveu garfo %d: Filosofo %d\n", (*eu+1)%N, *eu);
-            pthread_mutex_unlock(&forkV[(*eu+1)%N]);
-            fprintf(stderr,"Devolveu garfo %d: Filosofo %d\n", *eu, *eu);
-            pthread_mutex_unlock(&forkV[*eu]);
-
-            /* Pensando  */
-            fprintf(stderr,"Pensando: Filosofo %d\n", *eu);
-            ts.tv_sec=0;
-            ts.tv_nsec=TMAX*random()/RAND_MAX;
-            nanosleep(&ts,NULL);
-        }
-
-    return NULL;
+void uso() {
+    fprintf(stderr, "Uso:\n");
+    fprintf(stderr, "\t./ep2 <tamanho-da-pista> <numero-de-ciclistas>\n");
+    exit(EXIT_FAILURE);
 }
 
+void ciclista(int vel_inicial, int voltas) {
+    int eliminado = 0;
+    int quebrou = 0;
 
-//velodromo new_velodromo (int d, int n) {
-  //  velodromo velod;
-    //velod.tamanho = d;
-    //velod.n_ciclistas = n;
-
-    //linha* pista;
-    // rank ranking;
-    //return velod;
-//}
-
-ciclista *new_ciclista (int i) {
-    ciclista *c = malloc(sizeof(ciclista));
-    c->id = i;
-    c->velocidade = 30;
-    return c;
-}
-
-ciclista ***cria_pistas (int d, int n) {
-    ciclista ***pistas = (ciclista ***) malloc (NUM_FAIXAS * sizeof(ciclista**));
-    ciclista *cicli;
-
-    for (int i = 0; i < NUM_FAIXAS; i ++) {
-        pistas[i] = (ciclista **) malloc (d * sizeof(ciclista*));
-    }
-
-    for (int i = 0; i < NUM_FAIXAS; i++) {
-        for (int j = 0; j < d; j++) {
-            if (i * NUM_FAIXAS + j < n)
-                cicli = new_ciclista(i * NUM_FAIXAS + j);
-            else
-                cicli = NULL;
-            pistas[i][j] = cicli;
+    // Cada ciclista eliminado deverá decrementar a variável
+    // global n, utilizando o mutex_n. O qual também será
+    // utilizado para controlar o acesso ao ranking antes 
+    // de se alcançar a barreira.
+    while(1) {
+        if(turno == 0) {
+            // Atualiza velocidade e estado, utilizando as funções aleatórias.
+            if(eliminado || quebrou) {
+                // Encontrar alguma forma de controlar a aleatoriedade da destruição
+                // das threads
+                pthread_mutex_lock(&mutex_n);
+                n -= 1;
+                pthread_mutex_unlock(&mutex_n);
+            }
+            pthread_barrier_wait(&barr[0]);
+            pthread_barrier_wait(&barr[0]);
+        } else {
+            // Atualiza velocidade e estado, utilizando as funções aleatórias.
+            if(eliminado || quebrou) {
+                // Encontrar alguma forma de controlar a aleatoriedade da destruição
+                // das threads e de atualizar o ranking.
+                pthread_mutex_lock(&mutex_n);
+                n -= 1;
+                pthread_mutex_unlock(&mutex_n);
+            }
+            pthread_barrier_wait(&barr[1]);
+            pthread_barrier_wait(&barr[1]);
         }
     }
-
-    return pistas;
 }
 
-int main() {
-    int d = 250, n = 20;
-    int i, ids[N];
-    pthread_t filosofoT[N];
-    pthread_t ciclistas[5];
-    velodromo v;
-    ciclista *cicli;
-    ciclista ***pistas = cria_pistas(d, n);
+int main(int argc, char** argv) {
 
-    v.tamanho = d;
-    v.n_ciclistas = n;
+    if(argc != 3)
+        uso();
+        
+    d = atoi(argv[1]);
+    n = atoi(argv[2]);
+    int turno_main;
+
+    // Distribui os ciclistas nas faixas 0, 2, 4, 6 e 8.
+    /*
+    pista = malloc(d * sizeof(linha));
+    for(int i = 0; i < 2*n_ciclistas; i += 2) {
+        pista[i/NUM_FAIXAS].pos[i%NUM_FAIXAS].id = pthread_create
+    }
+    */
 
 
+    // São criadas duas barreiras, as quais serão alternadas a cada 
+    // turno da simulação. De modo que, enquanto as n threads ciclistas
+    // restantes esperam uma barreira, a do outro turno é criada.
+    pthread_barrier_init(&barr[0], NULL, n+1);
+    pthread_barrier_init(&barr[1], NULL, n+1);
 
+
+    while(1) {
+        pthread_barrier_wait(&barr[turno]);
+        pthread_barrier_destroy(&barr[!turno]);
+        // Aqui será feito todo o processamento da main.
+        pthread_barrier_init(&barr[!turno], NULL, n+1);
+        turno_main = turno;
+        turno = !turno;
+        pthread_barrier_wait(&barr[turno_main]);
+    }
+    
     return(0);
 }
