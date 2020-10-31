@@ -18,9 +18,10 @@ void uso() {
     exit(EXIT_FAILURE);
 }
 
-void ciclista(int vel_inicial, int voltas) {
+void* ciclista(int voltas) {
     int eliminado = 0;
     int quebrou = 0;
+    int vel = 30;
 
     // Cada ciclista eliminado deverá decrementar a variável
     // global n, utilizando o mutex_n. O qual também será
@@ -36,6 +37,7 @@ void ciclista(int vel_inicial, int voltas) {
                 n -= 1;
                 pthread_mutex_unlock(&mutex_n);
             }
+            printf("Hello");
             pthread_barrier_wait(&barr[0]);
             pthread_barrier_wait(&barr[0]);
         } else {
@@ -47,10 +49,12 @@ void ciclista(int vel_inicial, int voltas) {
                 n -= 1;
                 pthread_mutex_unlock(&mutex_n);
             }
+            printf("Hello");
             pthread_barrier_wait(&barr[1]);
             pthread_barrier_wait(&barr[1]);
         }
     }
+    return NULL;
 }
 
 int main(int argc, char** argv) {
@@ -61,6 +65,7 @@ int main(int argc, char** argv) {
     d = atoi(argv[1]);
     n = atoi(argv[2]);
     int turno_main;
+
 
     // Distribui os ciclistas nas faixas 0, 2, 4, 6 e 8.
     /*
@@ -77,16 +82,22 @@ int main(int argc, char** argv) {
     pthread_barrier_init(&barr[0], NULL, n+1);
     pthread_barrier_init(&barr[1], NULL, n+1);
 
+    pthread_t ids[n];
+    for(int z = 0; z < n; z++) {
+        pthread_create(&ids[z], NULL, (void*)&ciclista,(void*) &n);
+    }
 
     while(1) {
         pthread_barrier_wait(&barr[turno]);
         pthread_barrier_destroy(&barr[!turno]);
         // Aqui será feito todo o processamento da main.
+        printf("Tchau \n");
         pthread_barrier_init(&barr[!turno], NULL, n+1);
         turno_main = turno;
         turno = !turno;
         pthread_barrier_wait(&barr[turno_main]);
     }
+
     
     return(0);
 }
