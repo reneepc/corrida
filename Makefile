@@ -1,5 +1,5 @@
-pista: pista.c pista.h
-	gcc -pthread pista.c -o pista 
+pista: pista.c pista.h aleatorio.o
+	gcc -pthread pista.c aleatorio.o -o pista -lm
 
 aleatorio.o: aleatorio.c aleatorio.h
 	gcc -c aleatorio.c

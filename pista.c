@@ -1,12 +1,16 @@
 #include "pista.h"
+#include "aleatorio.h"
+#include <math.h>
 
 int d;
 int n;
 pthread_mutex_t mutex_n;
 pthread_barrier_t barr[2];
-int turno = 0;
+_Atomic int turno = 0;
+pthread_mutex_t mutex_turno;
 
 int intervalo = 60; // Multiplicado pela velocidade, obtem-se a distância percorrida. Modificar a lógica das velocidades para m/s, 30 possui valor decimal, porém podemos tentar contornar utilizando uma variável que é incrementada até três a cada ciclo e depois dividida, quando a velocidade for igual a 30m/s.
+int ultimas = 0; // Variável booleana que indica se está nas últimas duas voltas
 
 linha* pista;
 rank* ranking;
@@ -18,10 +22,14 @@ void uso() {
     exit(EXIT_FAILURE);
 }
 
-void* ciclista(int voltas) {
+void* ciclista() {
     int eliminado = 0;
     int quebrou = 0;
-    int vel = 30;
+    int vel = 8;
+    int volta = 1;
+    int metro_atual = 0;
+    int pos_relativa = 0;
+    double resto = 1.0;
 
     // Cada ciclista eliminado deverá decrementar a variável
     // global n, utilizando o mutex_n. O qual também será
@@ -29,29 +37,94 @@ void* ciclista(int voltas) {
     // de se alcançar a barreira.
     while(1) {
         if(turno == 0) {
-            // Atualiza velocidade e estado, utilizando as funções aleatórias.
-            if(eliminado || quebrou) {
-                // Encontrar alguma forma de controlar a aleatoriedade da destruição
-                // das threads
+
+            if(volta != 1) {
+                vel = decide_velocidade(vel, ultimas);
+                if(vel == 8) resto = 1.0;
+                else if(vel == 16) resto = 2.0;
+                else resto = 0;
+            }
+            if(metro_atual == 0) {
                 pthread_mutex_lock(&mutex_n);
-                n -= 1;
+                quebrou = decide_quebrou(volta, n);
+                if(quebrou) {
+                    if(n != 0) {
+                        n -= 1;
+                    }
+                    fprintf(stderr, "O ciclista quebrou");
+                }
                 pthread_mutex_unlock(&mutex_n);
             }
-            printf("Hello");
+
+            pos_relativa += vel*intervalo + ceil((resto*intervalo)/3);
+            if(pos_relativa >= 1000.0) {
+                metro_atual += 1;
+                pos_relativa = 0;
+            }
+            if(metro_atual == d) {
+                volta += 1;
+                metro_atual = 0;
+                fprintf(stderr, "Thread: %ld Volta %d Velocidade: %d\n", pthread_self(), volta, vel);
+            }
+
+            //// Atualiza velocidade e estado, utilizando as funções aleatórias.
+            //if(eliminado || quebrou) {
+            //    // Encontrar alguma forma de controlar a aleatoriedade da destruição
+            //    // das threads
+            //    pthread_mutex_lock(&mutex_n);
+            //    n -= 1;
+            //    pthread_mutex_unlock(&mutex_n);
+            //}
             pthread_barrier_wait(&barr[0]);
             pthread_barrier_wait(&barr[0]);
+            if(quebrou) break;
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////TURNO ÍMPAR//////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
         } else {
-            // Atualiza velocidade e estado, utilizando as funções aleatórias.
-            if(eliminado || quebrou) {
-                // Encontrar alguma forma de controlar a aleatoriedade da destruição
-                // das threads e de atualizar o ranking.
+            if(volta != 1) {
+                vel = decide_velocidade(vel, ultimas);
+                if(vel == 8) resto = 1.0;
+                else if(vel == 16) resto = 2.0;
+                else resto = 0;
+            }
+
+            if(metro_atual == 0) {
                 pthread_mutex_lock(&mutex_n);
-                n -= 1;
+                quebrou = decide_quebrou(volta, n);
+                if(quebrou) {
+                    if(n != 0) {
+                        n -= 1;
+                    }
+                    fprintf(stderr, "O ciclista quebrou");
+                }
                 pthread_mutex_unlock(&mutex_n);
             }
-            printf("Hello");
+
+            pos_relativa += vel*intervalo + ceil((resto*intervalo)/3);
+            if(pos_relativa >= 1000.0) {
+                metro_atual += 1;
+                pos_relativa = 0;
+            }
+            if(metro_atual == d) {
+                volta += 1;
+                metro_atual = 0;
+                fprintf(stderr, "Thread: %ld Volta %d Velocidade: %d\n", pthread_self(), volta, vel);
+            }
+
+
+            // Atualiza velocidade e estado, utilizando as funções aleatórias.
+            //if(eliminado || quebrou) {
+            //    // Encontrar alguma forma de controlar a aleatoriedade da destruição
+            //    // das threads e de atualizar o ranking.
+            //    pthread_mutex_lock(&mutex_n);
+            //    n -= 1;
+            //    pthread_mutex_unlock(&mutex_n);
+            //}
             pthread_barrier_wait(&barr[1]);
             pthread_barrier_wait(&barr[1]);
+            if(quebrou) break;
         }
     }
     return NULL;
@@ -84,18 +157,17 @@ int main(int argc, char** argv) {
 
     pthread_t ids[n];
     for(int z = 0; z < n; z++) {
-        pthread_create(&ids[z], NULL, (void*)&ciclista,(void*) &n);
+        pthread_create(&ids[z], NULL, (void*)&ciclista, NULL);
     }
 
     while(1) {
         pthread_barrier_wait(&barr[turno]);
         pthread_barrier_destroy(&barr[!turno]);
+        if(n == 0) exit(EXIT_SUCCESS);
         // Aqui será feito todo o processamento da main.
-        printf("Tchau \n");
         pthread_barrier_init(&barr[!turno], NULL, n+1);
-        turno_main = turno;
         turno = !turno;
-        pthread_barrier_wait(&barr[turno_main]);
+        pthread_barrier_wait(&barr[!turno]);
     }
 
     

@@ -1,4 +1,5 @@
 #include "aleatorio.h"
+#include <stdio.h>
 
 // Retorna um double entre 0 e 1, o qual será utilizado para
 // determinar a probabilidade de ocorrência de um evento.
@@ -26,17 +27,17 @@ double get_prob() {
 int decide_velocidade(int vel_ant, int ultimas_voltas) {
     double probabilidade = get_prob();
     int vel_final = vel_ant;
-    if(vel_ant == 30) {
+    if(vel_ant == 8) {
         if(probabilidade <= 0.8)
-            vel_final = 60;
+            vel_final = 16;
     }
-    if(vel_ant == 60) {
+    if(vel_ant == 16) {
         if(probabilidade <= 0.4)
-            vel_final = 30;
+            vel_final = 8;
     }
     if(ultimas_voltas == 1) {
         if(probabilidade <= 0.1)
-            vel_final = 90;
+            vel_final = 25;
     }
     
     return vel_final;
@@ -47,7 +48,7 @@ int decide_velocidade(int vel_ant, int ultimas_voltas) {
 // restante de ciclistas na corrida.
 //
 // Retorna 1 se o ciclista quebrou, 0 caso contrário.
-int quebrou(int volta, int restantes) {
+int decide_quebrou(int volta, int restantes) {
     if(volta % 6 == 0 && restantes > 5) {
         double probabilidade = get_prob();
         return probabilidade <= 0.05;

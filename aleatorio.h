@@ -7,7 +7,7 @@ double get_prob();
 
 int decide_velocidade(int vel_ant, int ultimas_voltas);
 
-int quebrou(int volta, int restantes);
+int decide_quebrou(int volta, int restantes);
 
 #endif
 
