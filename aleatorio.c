@@ -48,8 +48,8 @@ int decide_velocidade(int vel_ant, int ultimas_voltas) {
 // restante de ciclistas na corrida.
 //
 // Retorna 1 se o ciclista quebrou, 0 caso contrário.
-int decide_quebrou(int volta, int restantes) {
-    if(volta % 6 == 0 && restantes > 5) {
+int decide_quebrou(int restantes) {
+    if(restantes > 5) {
         double probabilidade = get_prob();
         return probabilidade <= 0.05;
     }
