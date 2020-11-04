@@ -50,17 +50,21 @@ void atualiza_ranking (int n, int volta, int quebrou, long thread) {
         ranking[n].ciclista = thread;
     }
 
+    if (thread == 0)
+        printf("\n\n\n\n");
+
 }
 
 void print_ranking() {
     fprintf(stderr, "\nRANKING\n");
     int rank = n_inicial - total_quebras;
-    for (int i = n_inicial; i > 0; i--) {
+    for (int i = n_inicial + 2; i > 0; i--) {
         if (!ranking[i].quebrou ) {
             fprintf(stderr, "#%d Ciclista %ld, cruzou a linha de chegada em %d.\n", rank, ranking[i].ciclista, ranking[i].tempo_final);
             rank--;
         }
     }
+
 
     fprintf(stderr, "\nQUEBRAS\n");
     for (int i = n_inicial; i > 0; i--) {
@@ -100,32 +104,32 @@ void* ciclista() {
                 }
             }
         // as vezes o sistema de eliminacao pula algumas das rodadas pares. Corrigir isso.
-        if (metro_atual == 0 && volta % 2 == 0) {
+        if (metro_atual == 0 && volta % 2 == 0 && volta > 1) {
             pthread_mutex_lock(&mutex_n);
             count += 1;
             if (count >= n) {
-                printf("O ciclista foi eliminado. \n");
+                printf("O ciclista %ld foi eliminado. \n", pthread_self());
                 atualiza_ranking(n, volta, 0, pthread_self());
-                if (n != 0) {
-                    n -= 1;
-                }
+                n -= 1;
+
                 count = 0;
                 eliminado = 1;
             }
 
-            else if (volta % 6 == 0) {
+            if (volta % 6 == 0) {
                 quebrou = decide_quebrou(n);
                 if(quebrou) {
-                    if(n != 0) {
-                        n -= 1;
-                    }
-                atualiza_ranking(n, volta, 1, pthread_self());
-                fprintf(stderr, "O ciclista %ld quebrou. \n", pthread_self());
-                total_quebras += 1;
+                    n -= 1;
+                    atualiza_ranking(n, volta, 1, pthread_self());
+                    fprintf(stderr, "O ciclista %ld quebrou. \n", pthread_self());
+                    total_quebras += 1;
                 }
             }
-            pthread_mutex_unlock(&mutex_n);
 
+
+            pthread_mutex_unlock(&mutex_n);
+            if (n == 1)
+                atualiza_ranking(n, volta, 0, pthread_self());
         }
 
 
@@ -159,21 +163,9 @@ void* ciclista() {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
         } else {
 
-/*
-            if (metro_atual == 0 && volta % 2 == 0 && volta > 1) {
-                pthread_mutex_lock(&mutex_n);
-                count += 1;
-                if (count == n) {
-                    printf("O ciclista foi eliminado.** \n");
-                    atualiza_ranking(n, volta, 0);
-                    if (n != 0) {
-                        n -= 1;
-                    }
-                    count = 0;
-                    eliminado = 1;
-                }
-                pthread_mutex_unlock(&mutex_n);
-            }*/
+
+            if (n == 1)
+                atualiza_ranking(n, volta, 0, pthread_self());
 
 
             if(volta != 1) {
