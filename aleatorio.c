@@ -36,8 +36,9 @@ int decide_velocidade(int vel_ant, int ultimas_voltas) {
             vel_final = 8;
     }
     if(ultimas_voltas == 1) {
-        if(probabilidade <= 0.1)
+        if(probabilidade <= 0.1) {
             vel_final = 25;
+        }
     }
     
     return vel_final;

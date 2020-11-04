@@ -11,13 +11,17 @@
 
 void cria_pista(pthread_t id_threads[]);
 
-void atualiza_numero(int pista_atual, int prox_pista);
+void atualiza_numero(int* pista_atual, int* prox_pista);
 
 int verifica_quebra();
 
-int atualiza_velocidade(int* vel);
+int atualiza_velocidade(int* vel, int ultimas_voltas);
 
 void atualiza_posicao(int* pista_atual, int* prox_pista, int* faixa_atual, int id, int* metro_atual, int* pos_relativa);
+
+void cria_ranking(int max_voltas, int n_total);
+
+void adiciona_colocacao(int id, int* volta);
 
 void* ciclista(int* id);
 
@@ -28,11 +32,13 @@ typedef struct linha_t {
     pthread_mutex_t mutex_linha;
 } linha;
 
-typedef struct rank_t {
-    int volta_final;                // Armazena a volta em que perderam ou quebraram
-    int tempo_final;                // Instante de tempo que cruzou a linha de chegada
-    int quebrou;                    // Indica se o ciclista quebrou
-} rank;
+
+typedef struct rank_final_t {
+    int colocacao;
+    int tempo_final;
+    int volta_final;
+    int id;
+} rank_final;
 
 #endif
 

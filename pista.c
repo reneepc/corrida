@@ -1,11 +1,13 @@
 #include "pista.h"
 #include "aleatorio.h"
 #include <math.h>
+#include <time.h>
 
-#define LOG_FD stdout
+#define LOG_FD stderr
 
 int d;
-int n;
+_Atomic int n;
+int n_total;
 pthread_mutex_t mutex_n;
 int max_voltas;
 pthread_barrier_t largada;
@@ -18,13 +20,33 @@ pthread_mutex_t mutex_ultimas;
 
 int* ids;
 linha* pista;
-rank* ranking;
-pthread_barrier_t* barreiras;
+
+int* elimina_id;
+int* quebra_id;
+_Atomic int* pos_volta;
+pthread_mutex_t* mutex_volta;
+int** ranking;
+
+rank_final* ranking_final;
+int pos_final;
+pthread_mutex_t mutex_final;
 
 void uso() {
     fprintf(stderr, "Uso:\n");
     fprintf(stderr, "\t./ep2 <tamanho-da-pista> <numero-de-ciclistas>\n");
     exit(EXIT_FAILURE);
+}
+
+void cria_ranking(int max_voltas, int n_total) {
+    // Armazena a posição do ultimo corredor da volta;
+    pos_volta = calloc(max_voltas + 1, sizeof(int));
+    mutex_volta = calloc(max_voltas + 1, sizeof(pthread_mutex_t));
+    // Armazena a colocação no id de cada corredor;
+    ranking = calloc(max_voltas + 1, sizeof(int*));
+    for(int i = 0; i < max_voltas + 1; i++) {
+        pthread_mutex_init(&mutex_volta[i], NULL);
+        ranking[i] = calloc(n_total, sizeof(int));
+    }
 }
 
 void cria_barreiras() {
@@ -45,6 +67,7 @@ void cria_pista(pthread_t id_threads[]) {
             pthread_mutex_init(&pista[i].mutex_pos[j], NULL);
             pista[i].pos[j] = -1;
         }
+        pthread_mutex_init(&pista[i].mutex_linha, NULL);
     }
 
     // Distribui os ciclistas nas faixas 0, 2, 4, 6 e 8.
@@ -68,60 +91,135 @@ void print_pista(linha* pista) {
     }
 }
 
-void atualiza_numero(int pista_atual, int prox_pista) {
-    pthread_mutex_lock(&pista[prox_pista].mutex_linha);
-    pthread_mutex_lock(&pista[pista_atual].mutex_linha);
-    pista[prox_pista].n_ciclistas++;
-    pista[pista_atual].n_ciclistas--;
-    pthread_mutex_unlock(&pista[prox_pista].mutex_linha);
-    pthread_mutex_unlock(&pista[pista_atual].mutex_linha);
+void atualiza_numero(int* pista_atual, int* prox_pista) {
+    pista[*prox_pista].n_ciclistas++;
+    pista[*pista_atual].n_ciclistas--;
 }
 
 int verifica_quebra() {
-    int quebrou;
+    int quebrou; 
     pthread_mutex_lock(&mutex_n);
     quebrou = decide_quebrou(n);
-    if(quebrou) {
-        fprintf(LOG_FD, "O ciclista quebrou\n");
-        //n -= 1;
-        fprintf(LOG_FD, "%d restantes\n", n);
-    }
     pthread_mutex_unlock(&mutex_n);
     return quebrou;
 }
 
-int atualiza_velocidade(int* vel) {
-    *vel = decide_velocidade(*vel, ultimas);
+int atualiza_velocidade(int* vel, int ultimas_voltas) {
+    *vel = decide_velocidade(*vel, ultimas_voltas);
     if(*vel == 8) return 1.0;
     else if(*vel == 16) return 2.0;
     else {
-        pthread_mutex_lock(&mutex_ultimas);
-        ultimas = 1;
-        pthread_mutex_unlock(&mutex_ultimas);
         return 0.0;
     }
 }
 
 void atualiza_posicao(int* pista_atual, int* prox_pista, int* faixa_atual, int id, int* metro_atual, int* pos_relativa) {
+    // Mutex do número de ciclistas
+    pthread_mutex_lock(&pista[*pista_atual].mutex_linha);
+    pthread_mutex_lock(&pista[*prox_pista].mutex_linha);
+    // Mutex das posições
     pthread_mutex_lock(&pista[*prox_pista].mutex_pos[*faixa_atual]);
     pthread_mutex_lock(&pista[*pista_atual].mutex_pos[*faixa_atual]);
-    if(pista[*prox_pista].pos[*faixa_atual] == -1) {
+    // Atualização de posição para a posição da frente
+    if(pista[*prox_pista].pos[*faixa_atual] == -1 && pista[*prox_pista].n_ciclistas < 5) {
         pista[*prox_pista].pos[*faixa_atual] = id;
         pista[*pista_atual].pos[*faixa_atual] = -1;
 
-        atualiza_numero(*pista_atual, *prox_pista);
+        atualiza_numero(pista_atual, prox_pista);
 
         pthread_mutex_unlock(&pista[*pista_atual].mutex_pos[*faixa_atual]);
         pthread_mutex_unlock(&pista[*prox_pista].mutex_pos[*faixa_atual]);
+        pthread_mutex_unlock(&pista[*pista_atual].mutex_linha);
+        pthread_mutex_unlock(&pista[*prox_pista].mutex_linha);
 
         *pista_atual = *prox_pista;
         *prox_pista = *pista_atual - 1;
         if(*prox_pista == -1) *prox_pista = d - 1;
         *metro_atual += 1;
         *pos_relativa = 0;
+    // Ultrapassagem
+    } else if(*faixa_atual < NUM_FAIXAS-1 && pista[*prox_pista].n_ciclistas < 5) {
+
+        pthread_mutex_lock(&pista[*prox_pista].mutex_pos[*faixa_atual+1]);
+        if(pista[*prox_pista].pos[*(faixa_atual)+1] == -1) {
+            pista[*prox_pista].pos[*(faixa_atual)+1] = id;
+            pista[*pista_atual].pos[*faixa_atual] = -1;
+
+            atualiza_numero(pista_atual, prox_pista);
+
+            pthread_mutex_unlock(&pista[*prox_pista].mutex_pos[*(faixa_atual)+1]);
+            pthread_mutex_unlock(&pista[*pista_atual].mutex_pos[*faixa_atual]);
+            pthread_mutex_unlock(&pista[*prox_pista].mutex_pos[*faixa_atual]);
+            pthread_mutex_unlock(&pista[*pista_atual].mutex_linha);
+            pthread_mutex_unlock(&pista[*prox_pista].mutex_linha);
+
+            *pista_atual = *prox_pista;
+            *prox_pista = *(pista_atual) - 1;
+            *faixa_atual = *(faixa_atual) + 1;
+            if(*prox_pista == -1) *prox_pista = d - 1;
+            *metro_atual += 1;
+            *pos_relativa = 0;
+        } else {
+            pthread_mutex_unlock(&pista[*prox_pista].mutex_pos[*(faixa_atual)+1]);
+            pthread_mutex_unlock(&pista[*pista_atual].mutex_pos[*faixa_atual]);
+            pthread_mutex_unlock(&pista[*prox_pista].mutex_pos[*faixa_atual]);
+            pthread_mutex_unlock(&pista[*pista_atual].mutex_linha);
+            pthread_mutex_unlock(&pista[*prox_pista].mutex_linha);
+        }
+
     } else {
         pthread_mutex_unlock(&pista[*pista_atual].mutex_pos[*faixa_atual]);
         pthread_mutex_unlock(&pista[*prox_pista].mutex_pos[*faixa_atual]);
+        pthread_mutex_unlock(&pista[*pista_atual].mutex_linha);
+        pthread_mutex_unlock(&pista[*prox_pista].mutex_linha);
+    }
+}
+
+void adiciona_colocacao(int id, int* volta) {
+    pthread_mutex_lock(&mutex_volta[*volta]);
+    pos_volta[*volta]++;
+    ranking[*volta][id] = pos_volta[*volta];
+    pthread_mutex_unlock(&mutex_volta[*volta]);
+}
+
+void remove_corredor(int* pista_atual, int*faixa_atual) {
+    pthread_mutex_lock(&pista[*pista_atual].mutex_linha);
+    pthread_mutex_lock(&pista[*pista_atual].mutex_pos[*faixa_atual]);
+        pista[*pista_atual].n_ciclistas--;
+        pista[*pista_atual].pos[*faixa_atual] = -1;
+    pthread_mutex_unlock(&pista[*pista_atual].mutex_pos[*faixa_atual]);
+    pthread_mutex_unlock(&pista[*pista_atual].mutex_linha);
+}
+
+void add_ranking_final_eliminado(int id, int tempo_total, int volta_final) {
+    pthread_mutex_lock(&mutex_final);
+        ranking_final[pos_final].id = id;
+        ranking_final[pos_final].tempo_final = tempo_total;
+        ranking_final[pos_final].volta_final = volta_final;
+
+        pthread_mutex_lock(&mutex_n);
+            ranking_final[pos_final].colocacao = n+1;
+        pthread_mutex_unlock(&mutex_n);
+
+        pos_final = pos_final + 1;
+    pthread_mutex_unlock(&mutex_final);
+}
+
+void add_ranking_final_quebrado(int id, int tempo_total, int volta_final) {
+    pthread_mutex_lock(&mutex_final);
+        ranking_final[pos_final].id = id;
+        ranking_final[pos_final].tempo_final = tempo_total;
+        ranking_final[pos_final].volta_final = volta_final;
+        ranking_final[pos_final].colocacao = -1;
+        pos_final = pos_final + 1;
+    pthread_mutex_unlock(&mutex_final);
+}
+
+void print_ranking_final(int n_total) {
+    for(int i = 0; i < n_total; i++) {
+        fprintf(stderr, "Posição %d: Ciclista %d", i, ranking_final[i].id);
+        fprintf(stderr, " - Tempo Final: %ds", ranking_final[i].tempo_final);
+        fprintf(stderr, " - Volta Final %d\n", ranking_final[i].volta_final);
     }
 }
 
@@ -130,6 +228,7 @@ void* ciclista(int* id) {
     int quebrou = 0;
     int vel = 8;
     int volta = 1;
+    double tempo_total = 0.0;
     int metro_atual = 0;
     int pos_relativa = 0;
     double resto = 1.0;
@@ -139,18 +238,20 @@ void* ciclista(int* id) {
     if(prox_pista == -1) prox_pista = d - 1;
 
     pthread_barrier_wait(&largada);
-    // Cada ciclista eliminado deverá decrementar a variável
-    // global n, utilizando o mutex_n. O qual também será
-    // utilizado para controlar o acesso ao ranking antes 
-    // de se alcançar a barreira.
+
     while(1) {
+
         if(turno == 0) {
-
-            if(volta != 1 && metro_atual == 0) {
-                resto = atualiza_velocidade(&vel);
+            if(elimina_id[*id]) {
+                fprintf(stderr, "O ciclista %d foi eliminado\n", *id);
+                remove_corredor(&pista_atual, &faixa_atual);
+                add_ranking_final_eliminado(*id, tempo_total, volta);
+                print_ranking_final(n_total);
+                break;
             }
+
             if(metro_atual == 0 && volta % 6 == 0) {
-                quebrou = verifica_quebra();
+                //quebrou = verifica_quebra();
             }
 
             pos_relativa += vel*intervalo + ceil((resto*intervalo)/3);
@@ -158,76 +259,124 @@ void* ciclista(int* id) {
                 atualiza_posicao(&pista_atual, &prox_pista, &faixa_atual, *id, &metro_atual, &pos_relativa);
             }
             if(metro_atual == d) {
+                fprintf(LOG_FD, "Thread: %3d Volta %d Velocidade: %d\n", *id, volta, vel);
+                if(volta <= max_voltas) {
+                    adiciona_colocacao(*id, &volta);
+                }
                 volta += 1;
                 metro_atual = 0;
-                fprintf(LOG_FD, "Thread: %3d Volta %d Velocidade: %d\n", *id, volta, vel);
             }
 
-            //// Atualiza velocidade e estado, utilizando as funções aleatórias.
-            //if(eliminado || quebrou) {
-            //    // Encontrar alguma forma de controlar a aleatoriedade da destruição
-            //    // das threads
-            //    pthread_mutex_lock(&mutex_n);
-            //    n -= 1;
-            //    pthread_mutex_unlock(&mutex_n);
-            //}
+            if(volta != 1 && metro_atual == 0) {
+                resto = atualiza_velocidade(&vel, max_voltas - 2 <= volta);
+            }
+            if(resto == 0 && ultimas == 0) {
+                pthread_mutex_lock(&mutex_ultimas);
+                ultimas = 1;
+                pthread_mutex_unlock(&mutex_ultimas);
+            }
+            if(volta <= max_voltas) tempo_total += 0.001*intervalo;
             pthread_barrier_wait(&barr[0]);
             pthread_barrier_wait(&barr[0]);
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////TURNO ÍMPAR//////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
         } else {
-
-            if(volta != 1 && metro_atual == 0) {
-                resto = atualiza_velocidade(&vel);
+            if(elimina_id[*id]) {
+                fprintf(stderr, "O ciclista %d foi eliminado\n", *id);
+                remove_corredor(&pista_atual, &faixa_atual);
+                add_ranking_final_eliminado(*id, tempo_total, volta);
+                print_ranking_final(n_total);
+                break;
             }
+
             if(metro_atual == 0 && volta % 6 == 0) {
-                quebrou = verifica_quebra();
+                //quebrou = verifica_quebra();
             }
-
             pos_relativa += vel*intervalo + ceil((resto*intervalo)/3);
-
             if(pos_relativa >= 1000.0) {
                 atualiza_posicao(&pista_atual, &prox_pista, &faixa_atual, *id, &metro_atual, &pos_relativa);
             }
-
             if(metro_atual == d) {
+                fprintf(LOG_FD, "Thread: %3d Volta %d Velocidade: %d\n", *id, volta, vel);
+                if(volta <= max_voltas) {
+                    adiciona_colocacao(*id, &volta);
+                }
                 volta += 1;
                 metro_atual = 0;
-                fprintf(LOG_FD, "Thread: %3d Volta %d Velocidade: %d\n", *id, volta, vel);
             }
 
+            if(volta != 1 && metro_atual == 0) {
+                resto = atualiza_velocidade(&vel, max_voltas - 2 <= volta);
+            }
+            if(resto == 0 && ultimas == 0) {
+                pthread_mutex_lock(&mutex_ultimas);
+                ultimas = 1;
+                pthread_mutex_unlock(&mutex_ultimas);
+            }
+            if(volta <= max_voltas) tempo_total += 0.001*intervalo;
             pthread_barrier_wait(&barr[1]);
             pthread_barrier_wait(&barr[1]);
         }
     }
     return NULL;
 }
+
+
 int main(int argc, char** argv) {
-    if(argc != 3)
+    if(argc < 3)
         uso();
         
     d = atoi(argv[1]);
     n = atoi(argv[2]);
-    max_voltas = 2*(n-1);
+    max_voltas = 2*(n-1) + 1;
     int turno_main;
+    int volta_atual = 1;
+    struct timespec tempo;
+    n_total = n;
+    int eliminado = 0;
+    ranking_final = calloc(n_total, sizeof(rank_final));
+    pos_final = 0;
+
+    elimina_id = calloc(n, sizeof(int));
+    quebra_id = calloc(n, sizeof(int));
 
     pthread_mutex_init(&mutex_n, NULL);
     pthread_mutex_init(&mutex_ultimas, NULL);
+    pthread_mutex_init(&mutex_final, NULL);
 
     cria_barreiras();
     pthread_t id_threads[n];
     cria_pista(id_threads);
-
-
+    cria_ranking(max_voltas, n_total);
 
     pthread_barrier_wait(&largada);
     while(1) {
         pthread_barrier_wait(&barr[turno]);
-        print_pista(pista);
         if(n == 0) exit(EXIT_SUCCESS);
-        if(ultimas) intervalo = 20;
+
+        if(ultimas && intervalo == 60) {
+            intervalo = 20;
+            fprintf(stderr, "Alterando intervalo\n");
+        }
+
+        if(pos_volta[volta_atual] == n) {
+            fprintf(stderr, "Volta %d Completada\n", volta_atual);
+            if(volta_atual % 2 == 0 && volta_atual != 1) {
+                for(int i = 0; i < n_total; i++) {
+                    if(ranking[volta_atual][i] == pos_volta[volta_atual]) {
+                        elimina_id[i] = 1;
+                        n = n - 1;
+                    }
+                }
+            }
+            volta_atual = volta_atual + 1;
+        }
+
+        if(argc == 4) {
+            tempo.tv_sec = 0;
+            tempo.tv_nsec = intervalo * 10000;
+            nanosleep(&tempo, NULL);
+            print_pista(pista);
+        }
 
         pthread_barrier_destroy(&barr[!turno]);
         pthread_barrier_init(&barr[!turno], NULL, n+1);
@@ -235,6 +384,6 @@ int main(int argc, char** argv) {
         pthread_barrier_wait(&barr[!turno]);
     }
 
-    
+        
     return(0);
 }
