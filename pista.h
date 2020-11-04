@@ -20,6 +20,7 @@ typedef struct rank_t {
     int volta_final;                // Armazena a volta em que perderam ou quebraram
     int tempo_final;                // Instante de tempo que cruzou a linha de chegada
     int quebrou;                    // Indica se o ciclista quebrou
+    long ciclista;					// Identificador da thread do ciclista em questao
 } rank;
 
 #endif

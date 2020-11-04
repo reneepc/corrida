@@ -4,8 +4,10 @@
 
 int d;
 int n;
+int n_inicial;
 int tempo; // Cronometro de quanto tempo se passou
 int count; // Contagem de quantas threads ja foram processadas, usado para definir quem sera eliminado.
+int total_quebras = 0; // Variavel para debug
 
 pthread_mutex_t mutex_n;
 int max_voltas;
@@ -40,24 +42,32 @@ void print_pista(linha* pista) {
 
 // Armazena 1 caso o ciclista tenha quebrado, e 0 em caso constrario.
 
-void atualiza_ranking (int n, int volta, int quebrou) {
-    ranking[n].volta_final = volta;
-    ranking[n].tempo_final = tempo;
-    ranking[n].quebrou = quebrou;
-}
-
-// Devolve 1 se o ciclista for eliminado e 0 caso contrario. 
-int verifica_eliminacao (int n, int volta) {
-    printf(" %d, %d, %d\n", volta %2, count, 2 * n);
-    if (volta % 2 == 0 && count == 2 * n) {
-        fprintf(stderr, "O ciclista %ld foi eliminado. \n", pthread_self());
-        atualiza_ranking(n, volta, 0);
-        count = 0;
-        return 1;
+void atualiza_ranking (int n, int volta, int quebrou, long thread) {
+    if (!ranking[n].quebrou) {
+        ranking[n].volta_final = volta;
+        ranking[n].tempo_final = tempo;
+        ranking[n].quebrou = quebrou;
+        ranking[n].ciclista = thread;
     }
-    else return 0;
+
 }
 
+void print_ranking() {
+    fprintf(stderr, "\nRANKING\n");
+    int rank = n_inicial - total_quebras;
+    for (int i = n_inicial; i > 0; i--) {
+        if (!ranking[i].quebrou ) {
+            fprintf(stderr, "#%d Ciclista %ld, cruzou a linha de chegada em %d.\n", rank, ranking[i].ciclista, ranking[i].tempo_final);
+            rank--;
+        }
+    }
+
+    fprintf(stderr, "\nQUEBRAS\n");
+    for (int i = n_inicial; i > 0; i--) {
+        if (ranking[i].quebrou == 1)
+            fprintf(stderr, "Ciclista %ld quebrou na volta %d.\n", ranking[i].ciclista, ranking[i].volta_final);
+    }
+}
 
 void* ciclista() {
     int eliminado = 0;
@@ -90,12 +100,12 @@ void* ciclista() {
                 }
             }
         // as vezes o sistema de eliminacao pula algumas das rodadas pares. Corrigir isso.
-        if (metro_atual == 0 && volta % 2 == 0 && volta > 1) {
+        if (metro_atual == 0 && volta % 2 == 0) {
             pthread_mutex_lock(&mutex_n);
             count += 1;
-            if (count == n) {
+            if (count >= n) {
                 printf("O ciclista foi eliminado. \n");
-                atualiza_ranking(n, volta, 0);
+                atualiza_ranking(n, volta, 0, pthread_self());
                 if (n != 0) {
                     n -= 1;
                 }
@@ -103,14 +113,15 @@ void* ciclista() {
                 eliminado = 1;
             }
 
-            if (volta % 6 == 0) {
+            else if (volta % 6 == 0) {
                 quebrou = decide_quebrou(n);
                 if(quebrou) {
-                if(n != 0) {
-                    n -= 1;
-                }
-                atualiza_ranking(n, volta, 1);
+                    if(n != 0) {
+                        n -= 1;
+                    }
+                atualiza_ranking(n, volta, 1, pthread_self());
                 fprintf(stderr, "O ciclista %ld quebrou. \n", pthread_self());
+                total_quebras += 1;
                 }
             }
             pthread_mutex_unlock(&mutex_n);
@@ -123,10 +134,11 @@ void* ciclista() {
                 metro_atual += 1;
                 pos_relativa = 0;
             }
+
             if(metro_atual == d) {
                 volta += 1;
                 metro_atual = 0;
-                fprintf(stderr, "Thread: %ld Volta %d Velocidade: %d\n", pthread_self(), volta, vel);
+                fprintf(stderr, "Thread: %ld Volta %d Velocidade: %d, %d, %d\n", pthread_self(), volta, vel, n, count);
             }
 
             //// Atualiza velocidade e estado, utilizando as funções aleatórias.
@@ -146,6 +158,24 @@ void* ciclista() {
 //////////////////////////////////////////TURNO ÍMPAR//////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
         } else {
+
+/*
+            if (metro_atual == 0 && volta % 2 == 0 && volta > 1) {
+                pthread_mutex_lock(&mutex_n);
+                count += 1;
+                if (count == n) {
+                    printf("O ciclista foi eliminado.** \n");
+                    atualiza_ranking(n, volta, 0);
+                    if (n != 0) {
+                        n -= 1;
+                    }
+                    count = 0;
+                    eliminado = 1;
+                }
+                pthread_mutex_unlock(&mutex_n);
+            }*/
+
+
             if(volta != 1) {
                 vel = decide_velocidade(vel, ultimas);
                 if(vel == 8) resto = 1.0;
@@ -162,7 +192,7 @@ void* ciclista() {
             if(metro_atual == d) {
                 volta += 1;
                 metro_atual = 0;
-                fprintf(stderr, "Thread: %ld Volta %d Velocidade: %d\n", pthread_self(), volta, vel);
+                fprintf(stderr, "Thread: %ld Volta %d Velocidade: %d, %d, %d\n", pthread_self(), volta, vel, n, count);
             }
 
 
@@ -176,7 +206,7 @@ void* ciclista() {
             //}
             pthread_barrier_wait(&barr[1]);
             pthread_barrier_wait(&barr[1]);
-            if(quebrou) break;
+            if(quebrou || eliminado) break;
         }
     }
     return NULL;
@@ -189,6 +219,7 @@ int main(int argc, char** argv) {
         
     d = atoi(argv[1]);
     n = atoi(argv[2]);
+    n_inicial = n;
     max_voltas = 2*(n-1);
     tempo = 0;
 
@@ -238,6 +269,8 @@ int main(int argc, char** argv) {
         pthread_barrier_init(&barr[!turno], NULL, n+1);
         turno = !turno;
         pthread_barrier_wait(&barr[!turno]);
+        if (n == 0)
+            print_ranking();
     }
 
     fprintf(stderr, "%d", tempo);
