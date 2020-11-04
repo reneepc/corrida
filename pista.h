@@ -32,7 +32,6 @@ typedef struct linha_t {
     pthread_mutex_t mutex_linha;
 } linha;
 
-
 typedef struct rank_final_t {
     int colocacao;
     int tempo_final;
