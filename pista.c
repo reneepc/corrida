@@ -43,25 +43,29 @@ void print_pista(linha* pista) {
 // Armazena 1 caso o ciclista tenha quebrado, e 0 em caso constrario.
 
 void atualiza_ranking (int n, int volta, int quebrou, long thread) {
-    if (!ranking[n].quebrou) {
-        ranking[n].volta_final = volta;
-        ranking[n].tempo_final = tempo;
-        ranking[n].quebrou = quebrou;
-        ranking[n].ciclista = thread;
-    }
-
-    if (thread == 0)
-        printf("\n\n\n\n");
+    ranking[n].volta_final = volta;
+    ranking[n].tempo_final = tempo;
+    ranking[n].quebrou = quebrou;
+    ranking[n].ciclista = thread;
 
 }
+
+// Imprime o ranqueamento dos ciclistas em ordem decrescente. 
+// A funcao esta com um bug: imprime x saidas adicionais que estao
+// completamente zeradas, fazendo com que o ranking va de 
+// [-x, (n - quebrados - x)]. As tentativas de nao imprimir as linhas zeradas 
+// fizeram com que os valores reais de alguns ciclistas fossem perdidos, entao optamos
+// pela impressao com linhas adicionais zeradas.
 
 void print_ranking() {
     fprintf(stderr, "\nRANKING\n");
     int rank = n_inicial - total_quebras;
-    for (int i = n_inicial + 2; i > 0; i--) {
+    for (int i = n_inicial + 1; i > 0; i--) {
         if (!ranking[i].quebrou ) {
+            
             fprintf(stderr, "#%d Ciclista %ld, cruzou a linha de chegada em %d.\n", rank, ranking[i].ciclista, ranking[i].tempo_final);
             rank--;
+            
         }
     }
 
@@ -116,7 +120,7 @@ void* ciclista() {
                 eliminado = 1;
             }
 
-            if (volta % 6 == 0) {
+            else if (volta % 6 == 0) {
                 quebrou = decide_quebrou(n);
                 if(quebrou) {
                     n -= 1;
@@ -126,10 +130,13 @@ void* ciclista() {
                 }
             }
 
-
             pthread_mutex_unlock(&mutex_n);
-            if (n == 1)
+
+            if (n == 1) {
+                pthread_mutex_lock(&mutex_n);
                 atualiza_ranking(n, volta, 0, pthread_self());
+                pthread_mutex_unlock(&mutex_n);
+            }
         }
 
 
