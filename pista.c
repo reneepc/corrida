@@ -223,6 +223,9 @@ void print_ranking_final(int n_total) {
     }
 }
 
+int vencedores[50] = {0};
+int n_vencedores = 0;
+
 void* ciclista(int* id) {
     int eliminado = 0;
     int quebrou = 0;
@@ -240,12 +243,12 @@ void* ciclista(int* id) {
     pthread_barrier_wait(&largada);
 
     while(1) {
-
         if(turno == 0) {
             if(elimina_id[*id]) {
                 fprintf(stderr, "O ciclista %d foi eliminado\n", *id);
                 remove_corredor(&pista_atual, &faixa_atual);
                 add_ranking_final_eliminado(*id, tempo_total, volta);
+                elimina_id[*id] = 0;
                 print_ranking_final(n_total);
                 break;
             }
@@ -266,6 +269,10 @@ void* ciclista(int* id) {
                 volta += 1;
                 metro_atual = 0;
             }
+            if(volta > max_voltas) {
+                n_vencedores++;
+                vencedores[*id] == 1;
+            }
 
             if(volta != 1 && metro_atual == 0) {
                 resto = atualiza_velocidade(&vel, max_voltas - 2 <= volta);
@@ -275,7 +282,7 @@ void* ciclista(int* id) {
                 ultimas = 1;
                 pthread_mutex_unlock(&mutex_ultimas);
             }
-            if(volta <= max_voltas) tempo_total += 0.001*intervalo;
+            tempo_total += 0.001*intervalo;
             pthread_barrier_wait(&barr[0]);
             pthread_barrier_wait(&barr[0]);
 //////////////////////////////////////////TURNO ÍMPAR//////////////////////////////////////////////////////////
@@ -284,6 +291,8 @@ void* ciclista(int* id) {
                 fprintf(stderr, "O ciclista %d foi eliminado\n", *id);
                 remove_corredor(&pista_atual, &faixa_atual);
                 add_ranking_final_eliminado(*id, tempo_total, volta);
+                elimina_id[*id] = 0;
+                fprintf(stderr, "Volta: %d", volta);
                 print_ranking_final(n_total);
                 break;
             }
@@ -291,6 +300,7 @@ void* ciclista(int* id) {
             if(metro_atual == 0 && volta % 6 == 0) {
                 //quebrou = verifica_quebra();
             }
+
             pos_relativa += vel*intervalo + ceil((resto*intervalo)/3);
             if(pos_relativa >= 1000.0) {
                 atualiza_posicao(&pista_atual, &prox_pista, &faixa_atual, *id, &metro_atual, &pos_relativa);
@@ -303,6 +313,10 @@ void* ciclista(int* id) {
                 volta += 1;
                 metro_atual = 0;
             }
+            //if(volta > max_voltas) {
+            //    n_vencedores++;
+            //    vencedores[*id] == 1;
+            //}
 
             if(volta != 1 && metro_atual == 0) {
                 resto = atualiza_velocidade(&vel, max_voltas - 2 <= volta);
@@ -312,7 +326,7 @@ void* ciclista(int* id) {
                 ultimas = 1;
                 pthread_mutex_unlock(&mutex_ultimas);
             }
-            if(volta <= max_voltas) tempo_total += 0.001*intervalo;
+            tempo_total += 0.001*intervalo;
             pthread_barrier_wait(&barr[1]);
             pthread_barrier_wait(&barr[1]);
         }
@@ -327,7 +341,7 @@ int main(int argc, char** argv) {
         
     d = atoi(argv[1]);
     n = atoi(argv[2]);
-    max_voltas = 2*(n-1) + 1;
+    max_voltas = 2*(n - 1);
     int turno_main;
     int volta_atual = 1;
     struct timespec tempo;
@@ -335,6 +349,8 @@ int main(int argc, char** argv) {
     int eliminado = 0;
     ranking_final = calloc(n_total, sizeof(rank_final));
     pos_final = 0;
+
+    int vencedores_atual = 0;
 
     elimina_id = calloc(n, sizeof(int));
     quebra_id = calloc(n, sizeof(int));
@@ -358,6 +374,7 @@ int main(int argc, char** argv) {
             fprintf(stderr, "Alterando intervalo\n");
         }
 
+        // Elimina Jogador
         if(pos_volta[volta_atual] == n) {
             fprintf(stderr, "Volta %d Completada\n", volta_atual);
             if(volta_atual % 2 == 0 && volta_atual != 1) {
@@ -371,6 +388,7 @@ int main(int argc, char** argv) {
             volta_atual = volta_atual + 1;
         }
 
+        // Debug
         if(argc == 4) {
             tempo.tv_sec = 0;
             tempo.tv_nsec = intervalo * 10000;
