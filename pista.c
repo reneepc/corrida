@@ -249,6 +249,11 @@ void* ciclista(int* id) {
                 print_ranking_final(n_total);
                 break;
             }
+             if (n == 1){
+                add_ranking_final_eliminado(*id, tempo_total, volta);
+                return 0;
+
+            } 
 
             if(metro_atual == 0 && volta % 6 == 0) {
                 //quebrou = verifica_quebra();
@@ -287,6 +292,11 @@ void* ciclista(int* id) {
                 print_ranking_final(n_total);
                 break;
             }
+             if (n == 1){
+                add_ranking_final_eliminado(*id, tempo_total, volta);
+                return 0;
+
+            } 
 
             if(metro_atual == 0 && volta % 6 == 0) {
                 //quebrou = verifica_quebra();
@@ -350,8 +360,8 @@ int main(int argc, char** argv) {
 
     pthread_barrier_wait(&largada);
     while(1) {
+        if(n == 1) exit(EXIT_SUCCESS);
         pthread_barrier_wait(&barr[turno]);
-        if(n == 0) exit(EXIT_SUCCESS);
 
         if(ultimas && intervalo == 60) {
             intervalo = 20;
@@ -370,6 +380,7 @@ int main(int argc, char** argv) {
             }
             volta_atual = volta_atual + 1;
         }
+
 
         if(argc == 4) {
             tempo.tv_sec = 0;
