@@ -4,6 +4,9 @@
 
 int d;
 int n;
+int tempo; // Cronometro de quanto tempo se passou
+int count; // Contagem de quantas threads ja foram processadas, usado para definir quem sera eliminado.
+
 pthread_mutex_t mutex_n;
 int max_voltas;
 pthread_barrier_t largada;
@@ -34,6 +37,28 @@ void print_pista(linha* pista) {
     }
 }
 
+
+// Armazena 1 caso o ciclista tenha quebrado, e 0 em caso constrario.
+
+void atualiza_ranking (int n, int volta, int quebrou) {
+    ranking[n].volta_final = volta;
+    ranking[n].tempo_final = tempo;
+    ranking[n].quebrou = quebrou;
+}
+
+// Devolve 1 se o ciclista for eliminado e 0 caso contrario. 
+int verifica_eliminacao (int n, int volta) {
+    printf(" %d, %d, %d\n", volta %2, count, 2 * n);
+    if (volta % 2 == 0 && count == 2 * n) {
+        fprintf(stderr, "O ciclista %ld foi eliminado. \n", pthread_self());
+        atualiza_ranking(n, volta, 0);
+        count = 0;
+        return 1;
+    }
+    else return 0;
+}
+
+
 void* ciclista() {
     int eliminado = 0;
     int quebrou = 0;
@@ -44,11 +69,14 @@ void* ciclista() {
     double resto = 1.0;
 
     pthread_barrier_wait(&largada);
+
+    
     // Cada ciclista eliminado deverá decrementar a variável
     // global n, utilizando o mutex_n. O qual também será
     // utilizado para controlar o acesso ao ranking antes 
     // de se alcançar a barreira.
     while(1) {
+
         if(turno == 0) {
 
             if(volta != 1 && metro_atual == 0) {
@@ -61,17 +89,34 @@ void* ciclista() {
                     pthread_mutex_unlock(&mutex_ultimas);
                 }
             }
-            if(metro_atual == 0 && volta % 6 == 0) {
-                pthread_mutex_lock(&mutex_n);
+        // as vezes o sistema de eliminacao pula algumas das rodadas pares. Corrigir isso.
+        if (metro_atual == 0 && volta % 2 == 0 && volta > 1) {
+            pthread_mutex_lock(&mutex_n);
+            count += 1;
+            if (count == n) {
+                printf("O ciclista foi eliminado. \n");
+                atualiza_ranking(n, volta, 0);
+                if (n != 0) {
+                    n -= 1;
+                }
+                count = 0;
+                eliminado = 1;
+            }
+
+            if (volta % 6 == 0) {
                 quebrou = decide_quebrou(n);
                 if(quebrou) {
-                    if(n != 0) {
-                        n -= 1;
-                    }
-                    fprintf(stderr, "O ciclista quebrou");
+                if(n != 0) {
+                    n -= 1;
                 }
-                pthread_mutex_unlock(&mutex_n);
+                atualiza_ranking(n, volta, 1);
+                fprintf(stderr, "O ciclista %ld quebrou. \n", pthread_self());
+                }
             }
+            pthread_mutex_unlock(&mutex_n);
+
+        }
+
 
             pos_relativa += vel*intervalo + ceil((resto*intervalo)/3);
             if(pos_relativa >= 1000.0) {
@@ -94,7 +139,8 @@ void* ciclista() {
             //}
             pthread_barrier_wait(&barr[0]);
             pthread_barrier_wait(&barr[0]);
-            if(quebrou) break;
+            
+            if(quebrou || eliminado) break;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////TURNO ÍMPAR//////////////////////////////////////////////////////////
@@ -107,17 +153,6 @@ void* ciclista() {
                 else resto = 0;
             }
 
-            if(metro_atual == 0 && volta % 6 == 0) {
-                pthread_mutex_lock(&mutex_n);
-                quebrou = decide_quebrou(n);
-                if(quebrou) {
-                    if(n != 0) {
-                        n -= 1;
-                    }
-                    fprintf(stderr, "O ciclista quebrou");
-                }
-                pthread_mutex_unlock(&mutex_n);
-            }
 
             pos_relativa += vel*intervalo + ceil((resto*intervalo)/3);
             if(pos_relativa >= 1000.0) {
@@ -155,6 +190,8 @@ int main(int argc, char** argv) {
     d = atoi(argv[1]);
     n = atoi(argv[2]);
     max_voltas = 2*(n-1);
+    tempo = 0;
+
     int turno_main;
 
     pthread_mutex_init(&mutex_n, NULL);
@@ -166,6 +203,9 @@ int main(int argc, char** argv) {
         for(int j = 0; j < NUM_FAIXAS; j++)
             pthread_mutex_init(&pista[i].mutex_pos[j], NULL);
     }
+
+    // Inicia ranking
+    ranking = calloc (n, sizeof(rank));
 
     pthread_barrier_init(&largada, NULL, n+1);
 
@@ -186,18 +226,20 @@ int main(int argc, char** argv) {
     }
     print_pista(pista);
 
+    count = 0;
     pthread_barrier_wait(&largada);
     while(1) {
         pthread_barrier_wait(&barr[turno]);
         pthread_barrier_destroy(&barr[!turno]);
         if(n == 0) exit(EXIT_SUCCESS);
         if(ultimas) intervalo = 20;
+        tempo += intervalo;
         // Aqui será feito todo o processamento da main.
         pthread_barrier_init(&barr[!turno], NULL, n+1);
         turno = !turno;
         pthread_barrier_wait(&barr[!turno]);
     }
 
-    
+    fprintf(stderr, "%d", tempo);
     return(0);
 }
