@@ -1,0 +1,23 @@
+Autores: Renê Cardozo    - 9797315
+         Verônica Stocco - 6828626
+
+/ / / COMPILAÇÃO / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / 
+
+Para compilar o simulador, basta executar o comando "make" no diretório raiz. 
+
+
+
+/ / / EXECUÇÃO / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / 
+
+O simulador é executado utilizando o seguinte comando:
+"./pista d n"
+
+Onde
+- "d" é o tamanho do velódromo em metros (d > 249,5); 
+- "n" é o número de ciclistas que participam da prova (n ≤ 5 * d).
+
+
+
+/ / / APRESENTAÇÃO EM PDF / / / / / / / / / / / / / / / / / / / / / / / / / / 
+
+A apresentação se encontra no diretório "doc"
