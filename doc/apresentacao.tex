@@ -68,11 +68,11 @@ A cada rodada, a posição atual do ciclista é atualizada com \textbf{atualiza\
 A eliminação de ciclistas se dá de duas formas:
 
 \begin{itemize}
-\item \textbf{Por quebra:} a chance de quebra é definida aleatóriamente.
+\item \textbf{Por quebra:} a chance de quebra é definida aleatóriamente, conforme as especificações do enunciado.
 \item \textbf{Por ser o último:} o último ciclista a completar uma volta de número par recebe uma flag em seu ID no vetor \textbf{elimina\_id}. Essa marcação occore no main. A eliminação é executada pela thread referente a esse ID, quando ela for executada. 
 \end{itemize}
 
-Quando um ciclista é eliminado, trancam-se os mutex ferentes à linha e faixa que ele ocupava para marcar essa posição como estando livre. Sua colocação é adicionada ao ranking, e outro mutex é utilizado para garantir que apenas uma thread altere o ranking final de cada vez.
+Quando um ciclista é eliminado, trancam-se os mutex ferentes à linha e faixa que ele ocupava para marcar essa posição como estando livre. Sua colocação é adicionada ao ranking, e outro mutex é utilizado para garantir que apenas uma thread altere o ranking de cada vez.
 \end{frame}
 
 
@@ -80,8 +80,15 @@ Quando um ciclista é eliminado, trancam-se os mutex ferentes à linha e faixa q
 
 \begin{frame}
 \frametitle{Ranqueamento}
+Optou-se por implementar 2 rankings distintos.
 
+\begin{itemize}
+\item \textbf{Ranking a cada rodada:} registra, no ID de cada ciclista, a sua colocação atual. Paralelo a esse ranking, um vetor de ints atômicos \textbf{pos_volta} é utilizado para armazenar a posição do último corredor de cada volta.
 
+\item \textbf{Ranking final:} conforme cada ciclista é eliminado, armazena-se sua colocação final na corrida, assim como tempo total, última volta e se sua bicicleta quebrou ou não.   
+\end{itemize}
+
+As atualizações nos valores dos rankings sempre são feitas utilizando mutexes referentes a eles.
 \end{frame}
 
 
