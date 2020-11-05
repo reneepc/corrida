@@ -6,6 +6,7 @@
 #define LOG_FD stderr
 
 int d;
+int args;
 _Atomic int n;
 int n_total;
 pthread_mutex_t mutex_n;
@@ -246,12 +247,12 @@ void* ciclista(int* id) {
                 fprintf(stderr, "O ciclista %d foi eliminado\n", *id);
                 remove_corredor(&pista_atual, &faixa_atual);
                 add_ranking_final_eliminado(*id, tempo_total, volta);
-                print_ranking_final(n_total);
+                //print_ranking_final(n_total);
                 break;
             }
              if (n == 1){
                 add_ranking_final_eliminado(*id, tempo_total, volta);
-                return 0;
+                return NULL;
 
             } 
 
@@ -264,7 +265,9 @@ void* ciclista(int* id) {
                 atualiza_posicao(&pista_atual, &prox_pista, &faixa_atual, *id, &metro_atual, &pos_relativa);
             }
             if(metro_atual == d) {
-                fprintf(LOG_FD, "Thread: %3d Volta %d Velocidade: %d\n", *id, volta, vel);
+                if(args == 5)
+                    fprintf(LOG_FD, "Ciclista: %3d Volta %d Velocidade: %d\n", *id, volta, vel);
+
                 if(volta <= max_voltas) {
                     adiciona_colocacao(*id, &volta);
                 }
@@ -289,12 +292,12 @@ void* ciclista(int* id) {
                 fprintf(stderr, "O ciclista %d foi eliminado\n", *id);
                 remove_corredor(&pista_atual, &faixa_atual);
                 add_ranking_final_eliminado(*id, tempo_total, volta);
-                print_ranking_final(n_total);
+                //print_ranking_final(n_total);
                 break;
             }
              if (n == 1){
                 add_ranking_final_eliminado(*id, tempo_total, volta);
-                return 0;
+                return NULL;
 
             } 
 
@@ -306,7 +309,8 @@ void* ciclista(int* id) {
                 atualiza_posicao(&pista_atual, &prox_pista, &faixa_atual, *id, &metro_atual, &pos_relativa);
             }
             if(metro_atual == d) {
-                fprintf(LOG_FD, "Thread: %3d Volta %d Velocidade: %d\n", *id, volta, vel);
+                if(args == 5)
+                    fprintf(LOG_FD, "Thread: %3d Volta %d Velocidade: %d\n", *id, volta, vel);
                 if(volta <= max_voltas) {
                     adiciona_colocacao(*id, &volta);
                 }
@@ -330,6 +334,12 @@ void* ciclista(int* id) {
     return NULL;
 }
 
+void ajusta_ranking(int id, int colocacao, int volta_atual) {
+    for(int i = volta_atual + 1; i <= max_voltas; i++) {
+        ranking[i][id] = colocacao;
+    }
+}
+
 
 int main(int argc, char** argv) {
     if(argc < 3)
@@ -341,6 +351,7 @@ int main(int argc, char** argv) {
     int turno_main;
     int volta_atual = 1;
     struct timespec tempo;
+    args = argc;
     n_total = n;
     int eliminado = 0;
     ranking_final = calloc(n_total, sizeof(rank_final));
@@ -372,7 +383,9 @@ int main(int argc, char** argv) {
             fprintf(stderr, "Volta %d Completada\n", volta_atual);
             if(volta_atual % 2 == 0 && volta_atual != 1) {
                 for(int i = 0; i < n_total; i++) {
+                    fprintf(LOG_FD, "Ciclista %d: - Colocação: %d\n", i, ranking[volta_atual][i]);
                     if(ranking[volta_atual][i] == pos_volta[volta_atual]) {
+                        ajusta_ranking(i, n, volta_atual);
                         elimina_id[i] = 1;
                         n = n - 1;
                     }
@@ -380,7 +393,6 @@ int main(int argc, char** argv) {
             }
             volta_atual = volta_atual + 1;
         }
-
 
         if(argc == 4) {
             tempo.tv_sec = 0;
