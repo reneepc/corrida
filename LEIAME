@@ -10,12 +10,18 @@ Para compilar o simulador, basta executar o comando "make" no diretório raiz.
 / / / EXECUÇÃO / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / 
 
 O simulador é executado utilizando o seguinte comando:
-"./ep2 d n debug"
+"./ep2 d n <debug> <ranking-debug>"
 
 Onde
 - "d" é o tamanho do velódromo em metros (d > 249,5); 
 - "n" é o número de ciclistas que participam da prova (n ≤ 5 * d).
-- "debug" é um argumento opcional que imprime o status de cada posição das faixas na pista a cada clock da simulação (60ms ou 20ms, a depender das condições).
+- "debug" é um argumento opcional que imprime o status de cada posição das faixas na pista a cada clock da simulação
+  (60ms ou 20ms, a depender das condições), este clock é realizado por meio de um nanosleep que multiplica o intervalo
+  por 1 000 000, podendo ser desativado na função main se desejado.
+- "ranking-debug" é outro argumento opcional que permite observar a evolução do ranking final dos ciclistas a cada
+  eliminação.
+
+* Ambos debug e ranking-debug podem ser quaisquer caracteres desde que estejam nas posições corretas
 
 
 / / / APRESENTAÇÃO EM PDF / / / / / / / / / / / / / / / / / / / / / / / / / / 

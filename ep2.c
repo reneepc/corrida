@@ -218,7 +218,7 @@ void add_ranking_final_quebrado(int id, int tempo_total, int volta_final) {
 
 void print_ranking_final(int n_total) {
     for(int i = 0; i < n_total; i++) {
-        fprintf(stderr, "Posição %d: Ciclista %d", i, ranking_final[i].id);
+        fprintf(stderr, "Colocação %d: Ciclista %d", ranking_final[i].colocacao, ranking_final[i].id);
         fprintf(stderr, " - Tempo Final: %ds", ranking_final[i].tempo_final);
         fprintf(stderr, " - Volta Final %d\n", ranking_final[i].volta_final);
     }
@@ -377,7 +377,6 @@ int main(int argc, char** argv) {
 
     pthread_barrier_wait(&largada);
     while(1) {
-        if(n == 1) exit(EXIT_SUCCESS);
         pthread_barrier_wait(&barr[turno]);
 
         if(ultimas && intervalo == 60) {
@@ -385,8 +384,9 @@ int main(int argc, char** argv) {
             fprintf(stderr, "Alterando intervalo\n");
         }
 
-        if(pos_volta[volta_atual] == n) {
+        if(pos_volta[volta_atual] == n && n != 1) {
             fprintf(stderr, "Volta %d Completada\n", volta_atual);
+            if(volta_atual == 175) exit(EXIT_SUCCESS);
             if(volta_atual % 2 == 0 && volta_atual != 1) {
                 for(int i = 0; i < n_total; i++) {
                     fprintf(LOG_FD, "Ciclista %d: - Colocação: %d\n", i, ranking[volta_atual][i]);
@@ -402,9 +402,17 @@ int main(int argc, char** argv) {
             volta_atual = volta_atual + 1;
         }
 
+        if(n == 1) {
+            printf("Acabou");
+            print_ranking_final(n_total);
+            break;
+        }
+
         if(argc == 4) {
             tempo.tv_sec = 0;
-            tempo.tv_nsec = intervalo * 10000;
+            // Multiplica o intervalo por 1 000 000 para obter
+            // o tempo em milisegundos.
+            tempo.tv_nsec = intervalo * 1000000;
             nanosleep(&tempo, NULL);
             print_pista(pista);
         }

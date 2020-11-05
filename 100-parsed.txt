@@ -1,0 +1,720 @@
+Alterando intervalo
+	Command being timed: "./ep2 1000 100"
+	User time (seconds): 45.19
+	System time (seconds): 166.45
+	Percent of CPU this job got: 375%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:56.29
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 4252
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 613
+	Voluntary context switches: 46464765
+	Involuntary context switches: 1849
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+Alterando intervalo
+	Command being timed: "./ep2 1000 100"
+	User time (seconds): 43.24
+	System time (seconds): 156.34
+	Percent of CPU this job got: 376%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:52.97
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 4296
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 610
+	Voluntary context switches: 45271723
+	Involuntary context switches: 1843
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+Alterando intervalo
+	Command being timed: "./ep2 1000 100"
+	User time (seconds): 48.37
+	System time (seconds): 168.76
+	Percent of CPU this job got: 377%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:57.58
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 4292
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 610
+	Voluntary context switches: 45434726
+	Involuntary context switches: 1990
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+Alterando intervalo
+	Command being timed: "./ep2 1000 100"
+	User time (seconds): 46.29
+	System time (seconds): 168.95
+	Percent of CPU this job got: 376%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:57.24
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 4404
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 613
+	Voluntary context switches: 46175146
+	Involuntary context switches: 1945
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+Alterando intervalo
+	Command being timed: "./ep2 1000 100"
+	User time (seconds): 42.47
+	System time (seconds): 152.63
+	Percent of CPU this job got: 377%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:51.71
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 4244
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 611
+	Voluntary context switches: 44603790
+	Involuntary context switches: 1797
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+Alterando intervalo
+	Command being timed: "./ep2 1000 100"
+	User time (seconds): 46.42
+	System time (seconds): 166.22
+	Percent of CPU this job got: 376%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:56.40
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 4252
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 611
+	Voluntary context switches: 46665860
+	Involuntary context switches: 1905
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+Alterando intervalo
+	Command being timed: "./ep2 1000 100"
+	User time (seconds): 43.61
+	System time (seconds): 156.50
+	Percent of CPU this job got: 376%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:53.14
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 4252
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 612
+	Voluntary context switches: 44595700
+	Involuntary context switches: 1846
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+Alterando intervalo
+	Command being timed: "./ep2 1000 100"
+	User time (seconds): 45.90
+	System time (seconds): 167.24
+	Percent of CPU this job got: 376%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:56.54
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 4260
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 613
+	Voluntary context switches: 45311494
+	Involuntary context switches: 1952
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+Alterando intervalo
+	Command being timed: "./ep2 1000 100"
+	User time (seconds): 44.46
+	System time (seconds): 158.89
+	Percent of CPU this job got: 375%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:54.13
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 4300
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 614
+	Voluntary context switches: 45370686
+	Involuntary context switches: 1983
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+Alterando intervalo
+	Command being timed: "./ep2 1000 100"
+	User time (seconds): 42.88
+	System time (seconds): 155.51
+	Percent of CPU this job got: 376%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:52.69
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 4296
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 610
+	Voluntary context switches: 45219423
+	Involuntary context switches: 1851
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+Alterando intervalo
+	Command being timed: "./ep2 1000 100"
+	User time (seconds): 42.69
+	System time (seconds): 154.44
+	Percent of CPU this job got: 376%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:52.36
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 4268
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 610
+	Voluntary context switches: 44688682
+	Involuntary context switches: 1837
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+Alterando intervalo
+	Command being timed: "./ep2 1000 100"
+	User time (seconds): 44.14
+	System time (seconds): 159.43
+	Percent of CPU this job got: 376%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:54.06
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 4244
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 613
+	Voluntary context switches: 44551714
+	Involuntary context switches: 1930
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+Alterando intervalo
+	Command being timed: "./ep2 1000 100"
+	User time (seconds): 45.21
+	System time (seconds): 161.62
+	Percent of CPU this job got: 376%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:54.93
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 4244
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 610
+	Voluntary context switches: 45269730
+	Involuntary context switches: 1910
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+Alterando intervalo
+	Command being timed: "./ep2 1000 100"
+	User time (seconds): 43.19
+	System time (seconds): 160.81
+	Percent of CPU this job got: 375%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:54.30
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 4420
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 614
+	Voluntary context switches: 45558695
+	Involuntary context switches: 2018
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+Alterando intervalo
+	Command being timed: "./ep2 1000 100"
+	User time (seconds): 46.49
+	System time (seconds): 167.95
+	Percent of CPU this job got: 377%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:56.88
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 4268
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 611
+	Voluntary context switches: 44984878
+	Involuntary context switches: 1792
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+Alterando intervalo
+	Command being timed: "./ep2 1000 100"
+	User time (seconds): 43.13
+	System time (seconds): 155.53
+	Percent of CPU this job got: 376%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:52.77
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 4412
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 614
+	Voluntary context switches: 44869500
+	Involuntary context switches: 1869
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+Alterando intervalo
+	Command being timed: "./ep2 1000 100"
+	User time (seconds): 44.08
+	System time (seconds): 157.26
+	Percent of CPU this job got: 377%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:53.38
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 4308
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 612
+	Voluntary context switches: 45672279
+	Involuntary context switches: 1803
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+Alterando intervalo
+	Command being timed: "./ep2 1000 100"
+	User time (seconds): 42.58
+	System time (seconds): 153.65
+	Percent of CPU this job got: 376%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:52.12
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 4404
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 615
+	Voluntary context switches: 44418049
+	Involuntary context switches: 1953
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+Alterando intervalo
+	Command being timed: "./ep2 1000 100"
+	User time (seconds): 45.25
+	System time (seconds): 161.92
+	Percent of CPU this job got: 376%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:55.05
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 4268
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 611
+	Voluntary context switches: 45413119
+	Involuntary context switches: 1910
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+Alterando intervalo
+	Command being timed: "./ep2 1000 100"
+	User time (seconds): 44.85
+	System time (seconds): 160.63
+	Percent of CPU this job got: 375%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:54.71
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 4292
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 611
+	Voluntary context switches: 45478848
+	Involuntary context switches: 1867
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+Alterando intervalo
+	Command being timed: "./ep2 1000 100"
+	User time (seconds): 44.62
+	System time (seconds): 159.84
+	Percent of CPU this job got: 375%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:54.43
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 4404
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 616
+	Voluntary context switches: 45273764
+	Involuntary context switches: 1831
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+Alterando intervalo
+	Command being timed: "./ep2 1000 100"
+	User time (seconds): 50.10
+	System time (seconds): 178.49
+	Percent of CPU this job got: 376%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:00.68
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 4412
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 614
+	Voluntary context switches: 45224475
+	Involuntary context switches: 1963
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+Alterando intervalo
+	Command being timed: "./ep2 1000 100"
+	User time (seconds): 44.27
+	System time (seconds): 160.21
+	Percent of CPU this job got: 369%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:55.36
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 4268
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 610
+	Voluntary context switches: 46037491
+	Involuntary context switches: 4784
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+Alterando intervalo
+	Command being timed: "./ep2 1000 100"
+	User time (seconds): 42.59
+	System time (seconds): 154.51
+	Percent of CPU this job got: 375%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:52.45
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 4292
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 611
+	Voluntary context switches: 44681909
+	Involuntary context switches: 2057
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+Alterando intervalo
+	Command being timed: "./ep2 1000 100"
+	User time (seconds): 45.44
+	System time (seconds): 161.77
+	Percent of CPU this job got: 378%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:54.78
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 4364
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 613
+	Voluntary context switches: 45119658
+	Involuntary context switches: 1893
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+Alterando intervalo
+	Command being timed: "./ep2 1000 100"
+	User time (seconds): 41.69
+	System time (seconds): 151.46
+	Percent of CPU this job got: 376%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:51.28
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 4316
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 612
+	Voluntary context switches: 43599367
+	Involuntary context switches: 1921
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+Alterando intervalo
+	Command being timed: "./ep2 1000 100"
+	User time (seconds): 42.29
+	System time (seconds): 156.43
+	Percent of CPU this job got: 360%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:55.11
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 4420
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 614
+	Voluntary context switches: 45365008
+	Involuntary context switches: 9044
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+Alterando intervalo
+	Command being timed: "./ep2 1000 100"
+	User time (seconds): 42.43
+	System time (seconds): 156.12
+	Percent of CPU this job got: 354%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:56.08
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 4268
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 612
+	Voluntary context switches: 44959962
+	Involuntary context switches: 9457
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+Alterando intervalo
+	Command being timed: "./ep2 1000 100"
+	User time (seconds): 45.20
+	System time (seconds): 166.96
+	Percent of CPU this job got: 350%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:00.61
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 4248
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 610
+	Voluntary context switches: 45228429
+	Involuntary context switches: 13733
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+Alterando intervalo
+	Command being timed: "./ep2 1000 100"
+	User time (seconds): 49.21
+	System time (seconds): 180.25
+	Percent of CPU this job got: 290%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:18.99
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 4404
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 614
+	Voluntary context switches: 45065334
+	Involuntary context switches: 25085
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
