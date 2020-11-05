@@ -10,12 +10,12 @@ Para compilar o simulador, basta executar o comando "make" no diretório raiz.
 / / / EXECUÇÃO / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / 
 
 O simulador é executado utilizando o seguinte comando:
-"./pista d n"
+"./pista d n debug"
 
 Onde
 - "d" é o tamanho do velódromo em metros (d > 249,5); 
 - "n" é o número de ciclistas que participam da prova (n ≤ 5 * d).
-
+- "debug" é um argumento opcional que imprime o status de cada posição das faixas na pista a cada clock da simulação (60ms ou 20ms, a depender das condições).
 
 
 / / / APRESENTAÇÃO EM PDF / / / / / / / / / / / / / / / / / / / / / / / / / / 
