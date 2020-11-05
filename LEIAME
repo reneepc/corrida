@@ -10,7 +10,7 @@ Para compilar o simulador, basta executar o comando "make" no diretório raiz.
 / / / EXECUÇÃO / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / 
 
 O simulador é executado utilizando o seguinte comando:
-"./pista d n debug"
+"./ep2 d n debug"
 
 Onde
 - "d" é o tamanho do velódromo em metros (d > 249,5); 
