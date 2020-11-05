@@ -41,7 +41,9 @@ O simulador utiliza duas barreiras para gerenciar os turnos da simulação. Dest
 
 Também foi utilizada uma barreira adicional para definir a largada das threads.
 
-A pista é composta por 10 linhas (é possivel editar esse valor em pista.h). Cada linha tem \textbf{d} metros, e um \textbf{mutex\_pos} referente a cada metro / faixa da linha.  No início da simulação, os ciclistas são distribuídos nas linhas 0, 2, 4, 6 , 8.
+A pista é composta por 10 faixas (é possivel editar esse valor em pista.h). Cada linha tem \textbf{d} metros, e um
+    \textbf{mutex\_pos} referente a cada metro / linha da faixa.  No início da simulação, os ciclistas são distribuídos
+    nas faixas 0, 2, 4, 6 , 8.
 
 \end{frame}
 
@@ -57,6 +59,11 @@ A cada rodada, a posição atual do ciclista é atualizada com \textbf{atualiza\
 \item linha para a qual o ciclista pode se mudar caso ocorra uma ultrapassagem;
 \item próxima faixa (posição) que o ciclista pode ocupar na linha atual;
 \item próxima faixa (posição) que o ciclista pode ocupar caso ocorra uma ultrapassagem;
+
+Os mutex referentes às linhas são utilizados para atualizar o número de ciclistas para que este não passe de 5 em cada
+        linha.
+
+Os mutex de posição são utilizados para travar os metros da pista individualmente.
 \end{itemize}
 
 \end{frame}
@@ -65,14 +72,18 @@ A cada rodada, a posição atual do ciclista é atualizada com \textbf{atualiza\
 
 \begin{frame}
 \frametitle{Eliminação de ciclistas}
-A eliminação de ciclistas se dá de duas formas:
+A eliminação de ciclistas é feita da seguinte forma:
 
-\begin{itemize}
-\item \textbf{Por quebra:} a chance de quebra é definida aleatóriamente, conforme as especificações do enunciado.
-\item \textbf{Por ser o último:} o último ciclista a completar uma volta de número par recebe uma flag em seu ID no vetor \textbf{elimina\_id}. Essa marcação occore no main. A eliminação é executada pela thread referente a esse ID, quando ela for executada. 
+\item O último ciclista a completar uma volta de número par recebe uma flag em seu ID no vetor \textbf{elimina\_id[]}.
+    Essa marcação occore no main. A eliminação é executada pela thread referente a esse ID, quando ela for executada.
 \end{itemize}
 
-Quando um ciclista é eliminado, trancam-se os mutex ferentes à linha e faixa que ele ocupava para marcar essa posição como estando livre. Sua colocação é adicionada ao ranking, e outro mutex é utilizado para garantir que apenas uma thread altere o ranking de cada vez.
+Quando um ciclista é eliminado, trancam-se os mutex ferentes à linha e faixa que ele ocupava para marcar essa posição
+como estando livre. Sua colocação é adicionada ao ranking, e outro mutex é utilizado para garantir que apenas uma thread
+altere o ranking a cada vez.
+
+O critério de eliminação por quebra foi implementado, porém, por apresentar comportamente irregular ele não foi
+utilizado na implementação final.
 \end{frame}
 
 
@@ -84,7 +95,11 @@ Optou-se por implementar 2 rankings distintos.
 
 
 \begin{itemize}
-\item \textbf{Ranking a cada rodada:} registra, no ID de cada ciclista, a sua colocação atual. Paralelo a esse ranking, um vetor de ints atômicos \textbf{pos\_volta} é utilizado para armazenar a posição do último corredor de cada volta.
+\item \textbf{Ranking a cada rodada:} registra, no ID de cada ciclista, a sua colocação atual. Paralelo a esse ranking,
+    um vetor de ints atômicos \textbf{pos\_volta} é utilizado para armazenar a posição do último corredor de cada volta.
+        Quando  valor da posição em que se encontra a volta atinge o valor total de ciclistas esperados para aquela
+        volta, o último ciclista é eliminado.
+        Após um ciclista ser eliminado, sua última posição é escrita no ranking de todas as voltas seguintes.
 
 \item \textbf{Ranking final:} conforme cada ciclista é eliminado, armazena-se sua colocação final na corrida, assim como tempo total, última volta e se sua bicicleta quebrou ou não.   
 \end{itemize}
@@ -100,9 +115,16 @@ As atualizações nos valores dos rankings sempre são feitas utilizando mutexes
 O simulador apresenta alguns bugs que não conseguimos corrigir a tempo da entrega. 
 
 \begin{itemize}
-\item \textbf{n < 30}: o ranking é impresso, mas a execução do simulador precisa ser interrompida manualmente. Algumas vezes as informações do último ciclista não são devidamente registradas, e o programa imprime que seu tempo e total de volta foram 0.
+\item \textbf{n < 20}: Com um número de ciclistas pequeno o simulador executa corretamente, apenas as duas últimas
+    posições do ranking final não aparecem como o esperado.
 
-\item \textbf{n > 30}: o simulador funciona como esperado até restarem em torno de 8 ciclistas na corrida. Quando isso acontece, não ocorrem mais eliminações. Os ciclistas remanescentes ficam ativos em loop até que o simulador seja interrompido manualmente.
+\item \textbf{n > 20}: o simulador apresenta problemas nas últimas voltas da corrida, em especial caso alguma thread
+    alcança as voltas finais muito antes dos outros. Quando isso acontece não ocorrem mais eliminações e os ciclistas
+        remanescentes ficam ativos no loop até que o simulador seja interrompido manualmente. Consequentemente os
+        rankings não são exibidos da maneira correta. 
+
+Este último bug pode ser visto melhor caso seja ativada a segunda opção de debug <debug-ranking> e desativada a primeira
+        que utiliza a função \textbf{print\_pista} que pode ser feita comentando o trecho da main.
 
 \end{itemize}
 
@@ -110,9 +132,9 @@ O simulador apresenta alguns bugs que não conseguimos corrigir a tempo da entre
 
 
 \begin{frame}
-\frametitle{Máquinas Utilizadas}
-
-
+\frametitle{Máquina Utilizada}
+Para realizar os testes foi utilizada uma máquina com um processador de 6 núcleos Intel I7-9750H e 64GB de RAM. O
+    sistema operacional utilizado foi o Pop!OS 20.10, baseado em Ubuntu.
 
 \end{frame}
 
@@ -130,7 +152,11 @@ O simulador apresenta alguns bugs que não conseguimos corrigir a tempo da entre
   \caption{Uso de memória}\label{fig:awesome_image2}
   \endminipage\hfill
 
-Como esperado, aumentar o número de ciclistas / pthreads em execução levou a um aumento considerável no tempo de execução da simulação. Também era de se esperar que a criação de pthreads adicionais não aumentasse tanto o uso de memória. 
+Como esperado, aumentar o número de ciclistas / pthreads em execução levou a um aumento considerável no tempo de
+    execução da simulação. Contudo, era esperado que este aumento ocorresse de forma exponencial. Também era de se
+    esperar que a criação de threads adicionais não aumentasse tanto o uso de memória, a qual é dominada, em especial,
+    pela alocação da pista e do ranking de ciclistas.
+
 \end{figure}
 
 \end{frame}
@@ -153,7 +179,8 @@ Como esperado, aumentar o número de ciclistas / pthreads em execução levou a 
 
 \end{figure}
 
-Mais uma vez, os resultados foram de acordo com o esperado. O aumento no tamanho da pista levou a um aumento considerável no tempo de execução da simulação, e a um aumento exponencial no uso de memória.
+Mais uma vez, os resultados foram de acordo com o esperado. O aumento no tamanho da pista levou a um crescimento
+    considerável do tempo de execução da simulação, e a um aumento exponencial no uso de memória.
 
 \end{frame}
 
@@ -177,7 +204,7 @@ Mais uma vez, os resultados foram de acordo com o esperado. O aumento no tamanho
 
 No caso do primeiro gráfico, quanto mais threads ativas, mais mudanças de contexto devem ocorrer para que todas completem sua execução. No caso do segundo, o número de threads era fixo, porém o número de iterações que elas precisavam completar para finalizar suas execuções era muito maior. \\
 
-O aumento na quantidade de mudanças de contexto ajuda a explicar o aumento na demora para execução das simulações. 
+O aumento na quantidade de mudanças de contexto ajuda a explicar a exponencialidade do tempo de execução.
 
 \end{small} 
 
