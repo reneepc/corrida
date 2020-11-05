@@ -117,7 +117,7 @@ O simulador apresenta alguns bugs que não conseguimos corrigir a tempo da entre
 \end{frame}
 
 \begin{frame}
-\frametitle{Gráficos: 10, 30, 100 ciclistas}
+\frametitle{Gráficos: 10, 30, 100 ciclistas numa pista de 1000 m}
 
 
 \begin{figure}[!htb]
@@ -129,6 +129,8 @@ O simulador apresenta alguns bugs que não conseguimos corrigir a tempo da entre
   \includegraphics[width=\linewidth]{imgs/ciclistas_memoria}
   \caption{Uso de memória}\label{fig:awesome_image2}
   \endminipage\hfill
+
+Como esperado, aumentar o número de ciclistas / pthreads em execução levou a um aumento considerável no tempo de execução da simulação. Também era de se esperar que a criação de pthreads adicionais não aumentasse tanto o uso de memória. 
 \end{figure}
 
 \end{frame}
@@ -136,7 +138,7 @@ O simulador apresenta alguns bugs que não conseguimos corrigir a tempo da entre
 
 
 \begin{frame}
-\frametitle{Gráficos: 500, 5000, 50000 metros de pista}
+\frametitle{Gráficos: 500, 5000, 50000 metros de pista com 20 ciclistas}
 
 
 \begin{figure}[!htb]
@@ -148,10 +150,12 @@ O simulador apresenta alguns bugs que não conseguimos corrigir a tempo da entre
   \includegraphics[width=\linewidth]{imgs/pistas_memoria}
   \caption{Uso de memória}\label{fig:awesome_image2}
   \endminipage\hfill
+
 \end{figure}
 
-\end{frame}
+Mais uma vez, os resultados foram de acordo com o esperado. O aumento no tamanho da pista levou a um aumento considerável no tempo de execução da simulação, e a um aumento exponencial no uso de memória.
 
+\end{frame}
 
 
 \begin{frame}
@@ -160,23 +164,27 @@ O simulador apresenta alguns bugs que não conseguimos corrigir a tempo da entre
 
 \minipage{0.50\textwidth}%
   \includegraphics[width=\linewidth]{imgs/ciclistas_contexto}
-  \caption{Alterando número de ciclistas}\label{fig:awesome_image3}
+  \caption{{\footnotesize Alterando número de ciclistas, com d = 1000}}\label{fig:awesome_image3}
 \endminipage
 \minipage{0.50\textwidth}%
   \includegraphics[width=\linewidth]{imgs/pistas_contexto}
-  \caption{Alterando o tamanho da pista}\label{fig:awesome_image3}
+  \caption{{\footnotesize Alterando o tamanho da pista, com n = 20}}\label{fig:awesome_image3}
 \endminipage
 \end{figure}
 
+\begin{small} 
+
+
+No caso do primeiro gráfico, quanto mais threads ativas, mais mudanças de contexto devem ocorrer para que todas completem sua execução. No caso do segundo, o número de threads era fixo, porém o número de iterações que elas precisavam completar para finalizar suas execuções era muito maior. \\
+
+O aumento na quantidade de mudanças de contexto ajuda a explicar o aumento na demora para execução das simulações. 
+
+\end{small} 
+
+
+
 \end{frame}
 
-
-
-\begin{frame}
-\frametitle{Análise dos resultados}
-
-
-\end{frame}
 
 
 \end{document}
