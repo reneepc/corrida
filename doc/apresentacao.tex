@@ -18,6 +18,7 @@ Universidade de São Paulo}
 \date{}
 
 \begin{document}
+
 \frame{\titlepage}
 
 \begin{frame}
@@ -124,7 +125,8 @@ O simulador apresenta alguns bugs que não conseguimos corrigir a tempo da entre
         rankings não são exibidos da maneira correta. 
 
 Este último bug pode ser visto melhor caso seja ativada a segunda opção de debug <debug-ranking> e desativada a primeira
-        que utiliza a função \textbf{print\_pista} que pode ser feita comentando o trecho da main.
+        que utiliza a função \textbf{print\_pista} que pode ser feita comentando o trecho da main responsável pelo
+        primeiro debug.
 
 \end{itemize}
 
@@ -153,7 +155,7 @@ Para realizar os testes foi utilizada uma máquina com um processador de 6 núcl
   \endminipage\hfill
 
 Como esperado, aumentar o número de ciclistas / pthreads em execução levou a um aumento considerável no tempo de
-    execução da simulação. Contudo, era esperado que este aumento ocorresse de forma exponencial. Também era de se
+    execução da simulação. Contudo, não era esperado que este aumento ocorresse de forma exponencial. Também era de se
     esperar que a criação de threads adicionais não aumentasse tanto o uso de memória, a qual é dominada, em especial,
     pela alocação da pista e do ranking de ciclistas.
 
