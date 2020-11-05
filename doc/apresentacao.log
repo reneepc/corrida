@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/Debian) (preloaded format=pdflatex 2020.10.29)  5 NOV 2020 05:07
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/Debian) (preloaded format=pdflatex 2020.10.29)  5 NOV 2020 05:11
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**apresentacao.tex
-(./apresentacao.tex
+**doc/apresentacao.tex
+(./doc/apresentacao.tex
 LaTeX2e <2020-02-02> patch level 5
 L3 programming layer <2020-07-17>
 (/usr/share/texlive/texmf-dist/tex/latex/beamer/beamer.cls
@@ -702,7 +702,17 @@ File: l3backend-pdfmode.def 2020-06-29 L3 backend support: PDF mode
 \l__kernel_color_stack_int=\count319
 \l__pdf_internal_box=\box75
 )
-No file apresentacao.aux.
+(./doc/apresentacao.aux
+
+LaTeX Warning: Label `fig:awesome_image1' multiply defined.
+
+
+LaTeX Warning: Label `fig:awesome_image2' multiply defined.
+
+
+LaTeX Warning: Label `fig:awesome_image3' multiply defined.
+
+)
 \openout1 = `apresentacao.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 20.
@@ -721,6 +731,7 @@ LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 20.
 LaTeX Font Info:    ... okay on input line 20.
 LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 20.
 LaTeX Font Info:    ... okay on input line 20.
+
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
 *geometry* verbose mode - [ preamble ] result:
@@ -795,6 +806,8 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 LaTeX Info: Redefining \ref on input line 20.
 LaTeX Info: Redefining \pageref on input line 20.
 LaTeX Info: Redefining \nameref on input line 20.
+
+(./doc/apresentacao.out) (./doc/apresentacao.out)
 \@outlinefile=\write5
 \openout5 = `apresentacao.out'.
 
@@ -866,9 +879,7 @@ ry-English.dict
 Dictionary: translator-theorem-dictionary, Language: English 
 )
 \c@lstlisting=\count327
-
-No file apresentacao.nav.
-
+ (./doc/apresentacao.nav)
 Overfull \hbox (371.9198pt too wide) in paragraph at lines 20--20
  [][]  \T1/cmss/m/n/6 ([])  
  []
@@ -909,47 +920,47 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.87 \end{frame}
+l.88 \end{frame}
                 
 ? 
 
-Underfull \hbox (badness 10000) detected at line 87
+Underfull \hbox (badness 10000) detected at line 88
 [][]
  []
 
 ! Undefined control sequence.
 <argument> .../enumerate \beameritemnestingprefix 
                                                   body end
-l.87 \end{frame}
+l.88 \end{frame}
                 
 ? 
 
-! LaTeX Error: \begin{beamer@frameslide} on input line 87 ended by \end{beamer@
+! LaTeX Error: \begin{beamer@frameslide} on input line 88 ended by \end{beamer@
 framepauses}.
 
 See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.87 \end{frame}
+l.88 \end{frame}
                 
 ? 
 ! Missing } inserted.
 <inserted text> 
                 }
-l.87 \end{frame}
+l.88 \end{frame}
                 
 ? 
 ! Too many }'s.
 \endbeamer@frameslide ...amer@framepauses}\egroup 
                                                   \ifx \beamer@frametitle \@...
-l.87 \end{frame}
+l.88 \end{frame}
                 
 ? 
 ! Undefined control sequence.
 \endbeamer@frameslide ...box \else \beamer@zoomer 
                                                   \fi \beamer@undolabels \be...
-l.87 \end{frame}
+l.88 \end{frame}
                 
 ? 
 
@@ -959,13 +970,13 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.87 \end{frame}
+l.88 \end{frame}
                 
 ? 
 ! Extra \endgroup.
 <recently read> \endgroup 
                           
-l.87 \end{frame}
+l.88 \end{frame}
                 
 ? 
 
@@ -997,29 +1008,29 @@ Overfull \hbox (371.9198pt too wide) has occurred while \output is active
 [8
 
 ]
-<imgs/ciclistas_tempo.png, id=239, 421.575pt x 277.035pt>
+<imgs/ciclistas_tempo.png, id=241, 421.575pt x 277.035pt>
 File: imgs/ciclistas_tempo.png Graphic file (type png)
 <use imgs/ciclistas_tempo.png>
-Package pdftex.def Info: imgs/ciclistas_tempo.png  used on input line 162.
+Package pdftex.def Info: imgs/ciclistas_tempo.png  used on input line 164.
 (pdftex.def)             Requested size: 171.21765pt x 112.5156pt.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 162
+LaTeX Font Info:    Trying to load font information for U+msa on input line 164
 .
  (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 162
+LaTeX Font Info:    Trying to load font information for U+msb on input line 164
 .
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-<imgs/ciclistas_memoria.png, id=241, 421.575pt x 277.035pt>
+<imgs/ciclistas_memoria.png, id=243, 421.575pt x 277.035pt>
 File: imgs/ciclistas_memoria.png Graphic file (type png)
 <use imgs/ciclistas_memoria.png>
-Package pdftex.def Info: imgs/ciclistas_memoria.png  used on input line 162.
+Package pdftex.def Info: imgs/ciclistas_memoria.png  used on input line 164.
 (pdftex.def)             Requested size: 171.21765pt x 112.5156pt.
 
-Overfull \vbox (0.59732pt too high) detected at line 162
+Overfull \vbox (0.59732pt too high) detected at line 164
  []
 
 
@@ -1029,28 +1040,28 @@ Overfull \hbox (371.9198pt too wide) has occurred while \output is active
 
 [9
 
- <./imgs/ciclistas_tempo.png> <./imgs/ciclistas_memoria.png>]
-<imgs/pistas_tempo.png, id=273, 421.575pt x 277.035pt>
+ <./doc/imgs/ciclistas_tempo.png> <./doc/imgs/ciclistas_memoria.png>]
+<imgs/pistas_tempo.png, id=275, 421.575pt x 277.035pt>
 File: imgs/pistas_tempo.png Graphic file (type png)
 <use imgs/pistas_tempo.png>
-Package pdftex.def Info: imgs/pistas_tempo.png  used on input line 185.
+Package pdftex.def Info: imgs/pistas_tempo.png  used on input line 187.
 (pdftex.def)             Requested size: 171.21765pt x 112.5156pt.
 pdfTeX warning (ext4): destination with the same identifier (name{fig:awesome_i
 mage1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.185 \end{frame}
+l.187 \end{frame}
                  
-<imgs/pistas_memoria.png, id=274, 421.575pt x 277.035pt>
+<imgs/pistas_memoria.png, id=276, 421.575pt x 277.035pt>
 File: imgs/pistas_memoria.png Graphic file (type png)
 <use imgs/pistas_memoria.png>
-Package pdftex.def Info: imgs/pistas_memoria.png  used on input line 185.
+Package pdftex.def Info: imgs/pistas_memoria.png  used on input line 187.
 (pdftex.def)             Requested size: 171.21765pt x 112.5156pt.
 pdfTeX warning (ext4): destination with the same identifier (name{fig:awesome_i
 mage2}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.185 \end{frame}
+l.187 \end{frame}
                  
 Overfull \hbox (371.9198pt too wide) has occurred while \output is active
  [][]  \T1/cmss/m/n/6 ([])  
@@ -1058,16 +1069,16 @@ Overfull \hbox (371.9198pt too wide) has occurred while \output is active
 
 [10
 
- <./imgs/pistas_tempo.png> <./imgs/pistas_memoria.png>]
-<imgs/ciclistas_contexto.png, id=303, 421.575pt x 277.035pt>
+ <./doc/imgs/pistas_tempo.png> <./doc/imgs/pistas_memoria.png>]
+<imgs/ciclistas_contexto.png, id=304, 421.575pt x 277.035pt>
 File: imgs/ciclistas_contexto.png Graphic file (type png)
 <use imgs/ciclistas_contexto.png>
-Package pdftex.def Info: imgs/ciclistas_contexto.png  used on input line 213.
+Package pdftex.def Info: imgs/ciclistas_contexto.png  used on input line 215.
 (pdftex.def)             Requested size: 171.21765pt x 112.5156pt.
-<imgs/pistas_contexto.png, id=304, 421.575pt x 277.035pt>
+<imgs/pistas_contexto.png, id=305, 421.575pt x 277.035pt>
 File: imgs/pistas_contexto.png Graphic file (type png)
 <use imgs/pistas_contexto.png>
-Package pdftex.def Info: imgs/pistas_contexto.png  used on input line 213.
+Package pdftex.def Info: imgs/pistas_contexto.png  used on input line 215.
 (pdftex.def)             Requested size: 171.21765pt x 112.5156pt.
 
 Overfull \hbox (371.9198pt too wide) has occurred while \output is active
@@ -1081,8 +1092,9 @@ mage3}) has been already used, duplicate ignored
 
 \@EveryShipout@Output ...@Org@Shipout \box \@cclv 
                                                   
-l.213 \end{frame}
-                  <./imgs/ciclistas_contexto.png> <./imgs/pistas_contexto.png>]
+l.215 \end{frame}
+                  <./doc/imgs/ciclistas_contexto.png> <./doc/imgs/pistas_contex
+to.png>]
 \tf@nav=\write6
 \openout6 = `apresentacao.nav'.
 
@@ -1092,32 +1104,26 @@ l.213 \end{frame}
 \tf@snm=\write8
 \openout8 = `apresentacao.snm'.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 217.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 217.
-(./apresentacao.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 217.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 217.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 219.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 219.
+ (./doc/apresentacao.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 219.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 219.
+Package rerunfilecheck Info: File `apresentacao.out' has not changed.
+(rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
 
 
-Package rerunfilecheck Warning: File `apresentacao.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `apresentacao.out':
-(rerunfilecheck)             Before: <no file>
-(rerunfilecheck)             After:  D41D8CD98F00B204E9800998ECF8427E;0.
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 19323 strings out of 482778
- 360828 string characters out of 5955218
- 610310 words of memory out of 5000000
- 34189 multiletter control sequences out of 15000+600000
+ 19360 strings out of 482778
+ 361251 string characters out of 5955218
+ 610506 words of memory out of 5000000
+ 34216 multiletter control sequences out of 15000+600000
  548662 words of font info for 59 fonts, out of 8000000 for 9000
  59 hyphenation exceptions out of 8191
- 59i,15n,59p,806b,553s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 59i,15n,59p,810b,553s stack positions out of 5000i,500n,10000p,200000b,80000s
  </home/reneepc/.texlive2020/texmf-var/fonts/pk/ljfour/jknappen/ec/ecss0900.6
 00pk> </home/reneepc/.texlive2020/texmf-var/fonts/pk/ljfour/jknappen/ec/ecss100
 0.600pk> </home/reneepc/.texlive2020/texmf-var/fonts/pk/ljfour/jknappen/ec/ecsx
@@ -1126,7 +1132,7 @@ css0600.600pk> </home/reneepc/.texlive2020/texmf-var/fonts/pk/ljfour/jknappen/e
 c/ecss0800.600pk> </home/reneepc/.texlive2020/texmf-var/fonts/pk/ljfour/jknappe
 n/ec/ecss1095.600pk> </home/reneepc/.texlive2020/texmf-var/fonts/pk/ljfour/jkna
 ppen/ec/ecss1440.600pk>
-Output written on apresentacao.pdf (11 pages, 143622 bytes).
+Output written on ./doc/apresentacao.pdf (11 pages, 143867 bytes).
 PDF statistics:
  641 PDF objects out of 1000 (max. 8388607)
  327 compressed objects within 4 object streams
