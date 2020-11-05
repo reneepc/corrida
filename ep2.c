@@ -386,7 +386,6 @@ int main(int argc, char** argv) {
 
         if(pos_volta[volta_atual] == n && n != 1) {
             fprintf(stderr, "Volta %d Completada\n", volta_atual);
-            if(volta_atual == 175) exit(EXIT_SUCCESS);
             if(volta_atual % 2 == 0 && volta_atual != 1) {
                 for(int i = 0; i < n_total; i++) {
                     fprintf(LOG_FD, "Ciclista %d: - Colocação: %d\n", i, ranking[volta_atual][i]);
