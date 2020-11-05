@@ -1,4 +1,4 @@
-#include "pista.h"
+#include "ep2.h"
 #include "aleatorio.h"
 #include <math.h>
 #include <time.h>
@@ -340,6 +340,12 @@ void ajusta_ranking(int id, int colocacao, int volta_atual) {
     }
 }
 
+void print_volta (int volta_atual) {
+    for(int i = 0; i < n_total; i++) {
+        fprintf(LOG_FD, "Ciclista %d: - Colocação: %d\n", i, ranking[volta_atual][i]);
+    }
+}
+
 
 int main(int argc, char** argv) {
     if(argc < 3)
@@ -390,6 +396,8 @@ int main(int argc, char** argv) {
                         n = n - 1;
                     }
                 }
+            } else {
+                print_volta(volta_atual);
             }
             volta_atual = volta_atual + 1;
         }
@@ -407,6 +415,5 @@ int main(int argc, char** argv) {
         pthread_barrier_wait(&barr[!turno]);
     }
 
-        
     return(0);
 }

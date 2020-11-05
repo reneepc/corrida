@@ -1,5 +1,5 @@
-#ifndef _VELODROMO_H
-#define _VELODROMO_H
+#ifndef _EP_H
+#define _EP_H
 
 #include <stdio.h>
 #include <stdlib.h>
